@@ -4,14 +4,33 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\JsonResponse;
 
 class NotificationCollection extends ResourceCollection
 {
     /**
-     * Transform the resource collection into an array.
+     * Create an HTTP response that represents the object.
      */
-    public function toArray(Request $request): array
+    public function toResponse($request): JsonResponse
     {
-        return parent::toArray($request);
+        if ($this->resource instanceof \Illuminate\Pagination\AbstractPaginator) {
+            return response()->json([
+                'success' => true,
+                'data' => $this->collection->toArray(),
+                'meta' => [
+                    'total' => $this->resource->total(),
+                    'per_page' => $this->resource->perPage(),
+                    'current_page' => $this->resource->currentPage(),
+                    'last_page' => $this->resource->lastPage(),
+                    'from' => $this->resource->firstItem(),
+                    'to' => $this->resource->lastItem(),
+                ],
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $this->collection->toArray(),
+        ]);
     }
 }

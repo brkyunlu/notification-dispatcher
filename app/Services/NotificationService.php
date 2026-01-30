@@ -6,6 +6,8 @@ use App\Enums\Status;
 use App\Models\Notification;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\UniqueConstraintViolationException;
+use Illuminate\Database\QueryException;
 
 class NotificationService
 {
@@ -17,6 +19,15 @@ class NotificationService
         // Generate idempotency key if provided in header
         if (request()->header('X-Idempotency-Key')) {
             $data['idempotency_key'] = request()->header('X-Idempotency-Key');
+            
+            // Check if idempotency key already exists
+            $existing = Notification::where('idempotency_key', $data['idempotency_key'])->first();
+            if ($existing) {
+                throw new \RuntimeException(
+                    'This request has already been processed. Idempotency key: ' . $data['idempotency_key'],
+                    409
+                );
+            }
         }
 
         // Ensure status is set
@@ -24,7 +35,24 @@ class NotificationService
             $data['status'] = Status::PENDING;
         }
 
-        return Notification::create($data);
+        try {
+            return Notification::create($data);
+        } catch (UniqueConstraintViolationException $e) {
+            // Handle duplicate idempotency key
+            if (str_contains($e->getMessage(), 'idempotency_key')) {
+                throw new \RuntimeException(
+                    'This request has already been processed. Please use a different idempotency key.',
+                    409
+                );
+            }
+            throw $e;
+        } catch (QueryException $e) {
+            // Handle other database errors
+            throw new \RuntimeException(
+                'Failed to create notification: ' . $e->getMessage(),
+                500
+            );
+        }
     }
 
     /**

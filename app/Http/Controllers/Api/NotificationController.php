@@ -23,23 +23,33 @@ class NotificationController extends Controller
     /**
      * List notifications with filters
      */
-    public function index(Request $request): NotificationCollection
+    public function index(Request $request): NotificationCollection|JsonResponse
     {
-        $filters = $request->only([
-            'status',
-            'channel',
-            'priority',
-            'batch_id',
-            'from',
-            'to',
-            'sort_by',
-            'sort_order',
-            'per_page',
-        ]);
+        try {
+            $filters = $request->only([
+                'status',
+                'channel',
+                'priority',
+                'batch_id',
+                'from',
+                'to',
+                'sort_by',
+                'sort_order',
+                'per_page',
+            ]);
 
-        $notifications = $this->notificationService->list($filters);
+            $notifications = $this->notificationService->list($filters);
 
-        return new NotificationCollection($notifications);
+            return new NotificationCollection($notifications);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => [
+                    'code' => 'INTERNAL_ERROR',
+                    'message' => 'An error occurred while fetching notifications',
+                ],
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -47,27 +57,53 @@ class NotificationController extends Controller
      */
     public function store(StoreNotificationRequest $request): JsonResponse
     {
-        if ($request->isBatch()) {
-            // Batch creation
-            $notifications = $this->notificationService->createBatch(
-                $request->input('notifications')
-            );
+        try {
+            if ($request->isBatch()) {
+                // Batch creation
+                $notifications = $this->notificationService->createBatch(
+                    $request->input('notifications')
+                );
 
             return response()->json([
+                'success' => true,
                 'message' => 'Batch notifications created successfully',
-                'batch_id' => $notifications[0]->batch_id,
-                'count' => count($notifications),
-                'data' => NotificationResource::collection($notifications),
+                'data' => [
+                    'batch_id' => $notifications[0]->batch_id,
+                    'count' => count($notifications),
+                    'notifications' => NotificationResource::collection($notifications),
+                ],
             ], Response::HTTP_CREATED);
+            }
+
+            // Single notification creation
+            $notification = $this->notificationService->create($request->validated());
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Notification created successfully',
+                'data' => new NotificationResource($notification),
+            ], Response::HTTP_CREATED);
+            
+        } catch (\RuntimeException $e) {
+            // Handle idempotency and business logic errors
+            $statusCode = $e->getCode() ?: Response::HTTP_BAD_REQUEST;
+            
+            return response()->json([
+                'error' => [
+                    'code' => $statusCode === 409 ? 'DUPLICATE_REQUEST' : 'BAD_REQUEST',
+                    'message' => $e->getMessage(),
+                ],
+            ], $statusCode);
+            
+        } catch (\Exception $e) {
+            // Handle unexpected errors
+            return response()->json([
+                'error' => [
+                    'code' => 'INTERNAL_ERROR',
+                    'message' => 'An unexpected error occurred while processing your request',
+                ],
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        // Single notification creation
-        $notification = $this->notificationService->create($request->validated());
-
-        return response()->json([
-            'message' => 'Notification created successfully',
-            'data' => new NotificationResource($notification),
-        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -79,11 +115,15 @@ class NotificationController extends Controller
 
         if (!$notification) {
             return response()->json([
-                'message' => 'Notification not found',
+                'error' => [
+                    'code' => 'NOT_FOUND',
+                    'message' => 'Notification not found',
+                ],
             ], Response::HTTP_NOT_FOUND);
         }
 
         return response()->json([
+            'success' => true,
             'data' => new NotificationResource($notification),
         ]);
     }
@@ -97,7 +137,10 @@ class NotificationController extends Controller
 
         if (!$notification) {
             return response()->json([
-                'message' => 'Notification not found',
+                'error' => [
+                    'code' => 'NOT_FOUND',
+                    'message' => 'Notification not found',
+                ],
             ], Response::HTTP_NOT_FOUND);
         }
 
@@ -105,12 +148,19 @@ class NotificationController extends Controller
 
         if (!$cancelled) {
             return response()->json([
-                'message' => 'Cannot cancel notification in current status',
-                'current_status' => $notification->status->value,
+                'error' => [
+                    'code' => 'INVALID_STATUS',
+                    'message' => 'Cannot cancel notification in current status',
+                    'details' => [
+                        'current_status' => $notification->status->value,
+                        'allowed_statuses' => ['pending', 'queued'],
+                    ],
+                ],
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return response()->json([
+            'success' => true,
             'message' => 'Notification cancelled successfully',
         ]);
     }
@@ -120,11 +170,22 @@ class NotificationController extends Controller
      */
     public function stats(Request $request): JsonResponse
     {
-        $batchId = $request->query('batch_id');
-        $stats = $this->notificationService->getStats($batchId);
+        try {
+            $batchId = $request->query('batch_id');
+            $stats = $this->notificationService->getStats($batchId);
 
-        return response()->json([
-            'data' => $stats,
-        ]);
+            return response()->json([
+                'success' => true,
+                'data' => $stats,
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => [
+                    'code' => 'INTERNAL_ERROR',
+                    'message' => 'An error occurred while fetching statistics',
+                ],
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
