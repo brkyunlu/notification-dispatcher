@@ -160,7 +160,8 @@ class Notification extends Model
      */
     public function canRetry(): bool
     {
-        return $this->attempts < 5 && !$this->status->isFinal();
+        $maxAttempts = config('notification.retry.max_attempts', 5);
+        return $this->attempts < $maxAttempts && !$this->status->isFinal();
     }
 
     /**

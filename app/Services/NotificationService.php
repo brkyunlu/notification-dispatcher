@@ -3,11 +3,13 @@
 namespace App\Services;
 
 use App\Enums\Status;
+use App\Jobs\ProcessNotificationJob;
 use App\Models\Notification;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 
 class NotificationService
 {
@@ -36,7 +38,20 @@ class NotificationService
         }
 
         try {
-            return Notification::create($data);
+            $notification = Notification::create($data);
+            
+            // Dispatch to queue based on priority
+            $this->dispatchToQueue($notification);
+            
+            Log::info('Notification created and queued', [
+                'notification_id' => $notification->id,
+                'channel' => $notification->channel->value,
+                'priority' => $notification->priority->value,
+                'queue' => $notification->priority->getQueueName(),
+            ]);
+            
+            return $notification;
+            
         } catch (UniqueConstraintViolationException $e) {
             // Handle duplicate idempotency key
             if (str_contains($e->getMessage(), 'idempotency_key')) {
@@ -56,6 +71,24 @@ class NotificationService
     }
 
     /**
+     * Dispatch notification to appropriate queue
+     */
+    private function dispatchToQueue(Notification $notification): void
+    {
+        // Skip if scheduled for later
+        if ($notification->scheduled_at && $notification->scheduled_at->isFuture()) {
+            return;
+        }
+
+        $queueName = $notification->priority->getQueueName();
+        
+        ProcessNotificationJob::dispatch($notification)
+            ->onQueue($queueName);
+            
+        $notification->markAsQueued();
+    }
+
+    /**
      * Create batch notifications
      */
     public function createBatch(array $notifications): array
@@ -65,8 +98,24 @@ class NotificationService
 
         foreach ($notifications as $notificationData) {
             $notificationData['batch_id'] = $batchId;
-            $created[] = Notification::create($notificationData);
+            
+            // Ensure status is set
+            if (!isset($notificationData['status'])) {
+                $notificationData['status'] = Status::PENDING;
+            }
+            
+            $notification = Notification::create($notificationData);
+            
+            // Dispatch to queue
+            $this->dispatchToQueue($notification);
+            
+            $created[] = $notification;
         }
+
+        Log::info('Batch notifications created and queued', [
+            'batch_id' => $batchId,
+            'count' => count($created),
+        ]);
 
         return $created;
     }
