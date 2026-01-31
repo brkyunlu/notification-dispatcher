@@ -4,7 +4,11 @@ use App\Http\Middleware\JsonResponseMiddleware;
 use App\Modules\Auth\Exceptions\AuthException;
 use App\Modules\Delivery\Exceptions\DeliveryException;
 use App\Modules\Notification\Exceptions\NotificationException;
+use App\Modules\Notification\Jobs\ProcessScheduledNotificationsJob;
+use App\Modules\Observability\Middleware\ApiRateLimitMiddleware;
+use App\Modules\Observability\Middleware\CorrelationIdMiddleware;
 use App\Modules\Template\Exceptions\TemplateException;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -20,8 +24,17 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
+    ->withSchedule(function (Schedule $schedule) {
+        // Process scheduled notifications every minute
+        // Job runs on queue, so no need for runInBackground()
+        $schedule->job(new ProcessScheduledNotificationsJob())
+            ->everyMinute()
+            ->withoutOverlapping()
+            ->onOneServer();
+    })
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->api(prepend: [
+            CorrelationIdMiddleware::class,  // Add correlation ID for tracing
             JsonResponseMiddleware::class,
         ]);
     })

@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Register middleware aliases
+        $router = $this->app['router'];
+        $router->aliasMiddleware('api.rate.limit', \App\Modules\Observability\Middleware\ApiRateLimitMiddleware::class);
     }
 }

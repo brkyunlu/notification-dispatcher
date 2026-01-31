@@ -1,11 +1,21 @@
 <?php
 
 use App\Modules\Notification\Controllers\NotificationController;
+use App\Modules\Observability\Controllers\HealthController;
+use App\Modules\Observability\Controllers\MetricsController;
 use App\Modules\Template\Controllers\TemplateController;
 use Illuminate\Support\Facades\Route;
 
+// Public health check endpoint (no auth required)
+Route::get('/health', [HealthController::class, 'index']);
+
 // API v1 routes - protected by API key authentication
-Route::prefix('v1')->middleware('api.key')->group(function () {
+Route::prefix('v1')->middleware(['api.key', 'api.rate.limit'])->group(function () {
+    
+    // Observability endpoints (requires 'read' permission)
+    Route::middleware('api.key:read')->group(function () {
+        Route::get('/metrics', [MetricsController::class, 'index']);
+    });
     
     // Read operations (requires 'read' permission)
     Route::middleware('api.key:read')->group(function () {

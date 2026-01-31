@@ -99,6 +99,24 @@ services:
       app:
         condition: service_started
 
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: notification-dispatcher-scheduler
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    command: php artisan schedule:work
+    networks:
+      - dispatcher-network
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      app:
+        condition: service_started
+
   reverb:
     build:
       context: .
