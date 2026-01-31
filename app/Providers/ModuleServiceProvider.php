@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Modules\Delivery\Contracts\ProviderInterface;
+use App\Modules\Delivery\Providers\WebhookProvider;
 use Illuminate\Support\ServiceProvider;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -11,9 +13,8 @@ class ModuleServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Register module service bindings here
-        // Example:
-        // $this->app->bind(ProviderInterface::class, WebhookProvider::class);
+        // Register provider interface binding
+        $this->app->bind(ProviderInterface::class, WebhookProvider::class);
     }
 
     /**

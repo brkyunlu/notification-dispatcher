@@ -2,7 +2,7 @@
 
 namespace App\Modules\Notification\Jobs;
 
-use App\Modules\Delivery\Services\RateLimiterService;
+use App\Modules\Delivery\Services\DeliveryService;
 use App\Modules\Notification\Models\Notification;
 use App\Shared\Enums\Status;
 use Illuminate\Bus\Queueable;
@@ -10,7 +10,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class ProcessNotificationJob implements ShouldQueue
@@ -34,7 +33,7 @@ class ProcessNotificationJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(RateLimiterService $rateLimiter): void
+    public function handle(DeliveryService $deliveryService): void
     {
         // Check if notification was cancelled
         $this->notification->refresh();
@@ -54,14 +53,13 @@ class ProcessNotificationJob implements ShouldQueue
             'channel' => $this->notification->channel->value,
             'priority' => $this->notification->priority->value,
             'attempt' => $this->notification->attempts,
+            'provider' => $deliveryService->getProviderName(),
         ]);
 
         try {
-            // Apply rate limiting
-            $rateLimiter->waitForSlot($this->notification->channel);
-
-            // Send notification via webhook
-            $response = $this->sendToProvider();
+            // Deliver notification via DeliveryService
+            // (handles rate limiting, circuit breaker, and provider)
+            $response = $deliveryService->deliver($this->notification);
 
             // Mark as sent
             $externalId = $response['message_id'] ?? null;
@@ -70,15 +68,17 @@ class ProcessNotificationJob implements ShouldQueue
             Log::info('Notification sent successfully', [
                 'notification_id' => $this->notification->id,
                 'external_message_id' => $externalId,
+                'provider' => $deliveryService->getProviderName(),
             ]);
 
-        } catch (\Exception $e) {
+        } catch (\RuntimeException $e) {
             $this->notification->markAsFailed($e->getMessage());
 
             Log::error('Notification sending failed', [
                 'notification_id' => $this->notification->id,
                 'error' => $e->getMessage(),
                 'attempt' => $this->notification->attempts,
+                'status_code' => $e->getCode(),
             ]);
 
             // Re-throw if can retry
@@ -95,45 +95,6 @@ class ProcessNotificationJob implements ShouldQueue
     }
 
     /**
-     * Send notification to provider (webhook.site)
-     */
-    private function sendToProvider(): array
-    {
-        // Use webhook.site for testing
-        $webhookUrl = config('notification.webhook_url', 'https://webhook.site/unique-uuid');
-
-        $payload = [
-            'id' => $this->notification->id,
-            'recipient' => $this->notification->recipient,
-            'channel' => $this->notification->channel->value,
-            'content' => $this->notification->content,
-            'subject' => $this->notification->subject,
-            'priority' => $this->notification->priority->value,
-        ];
-
-        // Get HTTP settings from config
-        $timeout = config('notification.provider.timeout', 30);
-        $retryAttempts = config('notification.provider.retry_attempts', 2);
-        $retryDelay = config('notification.provider.retry_delay', 100);
-
-        $response = Http::timeout($timeout)
-            ->retry($retryAttempts, $retryDelay)
-            ->post($webhookUrl, $payload);
-
-        if (!$response->successful()) {
-            throw new \RuntimeException(
-                "Provider returned error: {$response->status()}",
-                $response->status()
-            );
-        }
-
-        return [
-            'message_id' => $this->notification->id,
-            'status' => 'sent',
-        ];
-    }
-
-    /**
      * Handle job failure
      */
     public function failed(\Throwable $exception): void
@@ -141,7 +102,7 @@ class ProcessNotificationJob implements ShouldQueue
         $this->notification->refresh();
         $this->notification->markAsFailed($exception->getMessage());
 
-        // Create failed notification record
+        // Create failed notification record (Dead Letter Queue)
         $this->notification->failures()->create([
             'channel' => $this->notification->channel,
             'error_message' => $exception->getMessage(),
@@ -160,3 +121,4 @@ class ProcessNotificationJob implements ShouldQueue
         ]);
     }
 }
+

@@ -64,15 +64,15 @@ class NotificationController extends Controller
                     $request->input('notifications')
                 );
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Batch notifications created successfully',
-                'data' => [
-                    'batch_id' => $notifications[0]->batch_id,
-                    'count' => count($notifications),
-                    'notifications' => NotificationResource::collection($notifications),
-                ],
-            ], Response::HTTP_CREATED);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Batch notifications created successfully',
+                    'data' => [
+                        'batch_id' => $notifications[0]->batch_id,
+                        'count' => count($notifications),
+                        'notifications' => NotificationResource::collection($notifications),
+                    ],
+                ], Response::HTTP_CREATED);
             }
 
             // Single notification creation
