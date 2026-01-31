@@ -135,6 +135,18 @@ services:
       - app
       - redis
 
+  jaeger:
+    image: jaegertracing/all-in-one:1.53
+    container_name: notification-dispatcher-jaeger
+    restart: unless-stopped
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "4318:4318"    # OTLP HTTP receiver
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    networks:
+      - dispatcher-network
+
 networks:
   dispatcher-network:
     driver: bridge

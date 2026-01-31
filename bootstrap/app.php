@@ -7,6 +7,7 @@ use App\Modules\Notification\Exceptions\NotificationException;
 use App\Modules\Notification\Jobs\ProcessScheduledNotificationsJob;
 use App\Modules\Observability\Middleware\ApiRateLimitMiddleware;
 use App\Modules\Observability\Middleware\CorrelationIdMiddleware;
+use App\Modules\Observability\Middleware\TracingMiddleware;
 use App\Modules\Template\Exceptions\TemplateException;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\QueryException;
@@ -34,6 +35,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->api(prepend: [
+            TracingMiddleware::class,        // Distributed tracing (root span)
             CorrelationIdMiddleware::class,  // Add correlation ID for tracing
             JsonResponseMiddleware::class,
         ]);

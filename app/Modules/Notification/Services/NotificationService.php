@@ -5,6 +5,7 @@ namespace App\Modules\Notification\Services;
 use App\Modules\Notification\Exceptions\NotificationException;
 use App\Modules\Notification\Jobs\ProcessNotificationJob;
 use App\Modules\Notification\Models\Notification;
+use App\Modules\Observability\Services\TracingService;
 use App\Modules\Template\Models\Template;
 use App\Shared\Enums\Priority;
 use App\Shared\Enums\Status;
@@ -15,39 +16,51 @@ use Illuminate\Support\Str;
 
 class NotificationService
 {
+    public function __construct(
+        private ?TracingService $tracingService = null
+    ) {}
+
     /**
      * Create a single notification
      */
     public function create(array $data): Notification
     {
-        // Generate idempotency key if provided in header
-        if (request()->header('X-Idempotency-Key')) {
-            $data['idempotency_key'] = request()->header('X-Idempotency-Key');
-            
-            // Check if idempotency key already exists
-            $existing = Notification::where('idempotency_key', $data['idempotency_key'])->first();
-            if ($existing) {
-                throw NotificationException::duplicateIdempotency($data['idempotency_key']);
-            }
-        }
-
-        // Apply template if provided
-        if (isset($data['template_id'])) {
-            $data = $this->applyTemplate($data);
-        }
-
-        // Ensure status is set
-        if (!isset($data['status'])) {
-            $data['status'] = Status::PENDING;
-        }
-
-        // Ensure priority is set
-        if (!isset($data['priority'])) {
-            $data['priority'] = Priority::NORMAL;
-        }
+        [$span, $scope] = $this->tracingService?->startSpan('NotificationService.create', [
+            'notification.channel' => $data['channel'] ?? 'unknown',
+            'notification.priority' => $data['priority'] ?? 'normal',
+        ]) ?? [null, null];
 
         try {
+            // Generate idempotency key if provided in header
+            if (request()->header('X-Idempotency-Key')) {
+                $data['idempotency_key'] = request()->header('X-Idempotency-Key');
+                
+                // Check if idempotency key already exists
+                $existing = Notification::where('idempotency_key', $data['idempotency_key'])->first();
+                if ($existing) {
+                    throw NotificationException::duplicateIdempotency($data['idempotency_key']);
+                }
+            }
+
+            // Apply template if provided
+            if (isset($data['template_id'])) {
+                $data = $this->applyTemplate($data);
+            }
+
+            // Ensure status is set
+            if (!isset($data['status'])) {
+                $data['status'] = Status::PENDING;
+            }
+
+            // Ensure priority is set
+            if (!isset($data['priority'])) {
+                $data['priority'] = Priority::NORMAL;
+            }
+
             $notification = Notification::create($data);
+            
+            // Add notification ID to span
+            $this->tracingService?->addAttribute('notification.id', $notification->id, $span);
             
             // Dispatch to queue based on priority
             $this->dispatchToQueue($notification);
@@ -63,12 +76,17 @@ class NotificationService
             
         } catch (UniqueConstraintViolationException $e) {
             // Handle duplicate idempotency key
+            $this->tracingService?->recordException($e, $span);
             if (str_contains($e->getMessage(), 'idempotency_key')) {
                 throw NotificationException::duplicateIdempotency($data['idempotency_key'] ?? 'unknown');
             }
             throw $e; // Let global handler catch other unique constraint violations
+        } catch (\Throwable $e) {
+            $this->tracingService?->recordException($e, $span);
+            throw $e;
+        } finally {
+            $this->tracingService?->endSpan($span, $scope);
         }
-        // Other QueryExceptions will be caught by the global handler
     }
 
     /**
@@ -156,41 +174,55 @@ class NotificationService
      */
     public function createBatch(array $notifications): array
     {
-        $batchId = Str::uuid()->toString();
-        $created = [];
+        [$span, $scope] = $this->tracingService?->startSpan('NotificationService.createBatch', [
+            'notification.batch_size' => count($notifications),
+        ]) ?? [null, null];
 
-        foreach ($notifications as $notificationData) {
-            $notificationData['batch_id'] = $batchId;
-            
-            // Apply template if provided
-            if (isset($notificationData['template_id'])) {
-                $notificationData = $this->applyTemplate($notificationData);
+        try {
+            $batchId = Str::uuid()->toString();
+            $created = [];
+
+            $this->tracingService?->addAttribute('notification.batch_id', $batchId, $span);
+
+            foreach ($notifications as $notificationData) {
+                $notificationData['batch_id'] = $batchId;
+                
+                // Apply template if provided
+                if (isset($notificationData['template_id'])) {
+                    $notificationData = $this->applyTemplate($notificationData);
+                }
+                
+                // Ensure status is set
+                if (!isset($notificationData['status'])) {
+                    $notificationData['status'] = Status::PENDING;
+                }
+                
+                // Ensure priority is set
+                if (!isset($notificationData['priority'])) {
+                    $notificationData['priority'] = Priority::NORMAL;
+                }
+                
+                $notification = Notification::create($notificationData);
+                
+                // Dispatch to queue
+                $this->dispatchToQueue($notification);
+                
+                $created[] = $notification;
             }
-            
-            // Ensure status is set
-            if (!isset($notificationData['status'])) {
-                $notificationData['status'] = Status::PENDING;
-            }
-            
-            // Ensure priority is set
-            if (!isset($notificationData['priority'])) {
-                $notificationData['priority'] = Priority::NORMAL;
-            }
-            
-            $notification = Notification::create($notificationData);
-            
-            // Dispatch to queue
-            $this->dispatchToQueue($notification);
-            
-            $created[] = $notification;
+
+            Log::info('Batch notifications created and queued', [
+                'batch_id' => $batchId,
+                'count' => count($created),
+            ]);
+
+            return $created;
+
+        } catch (\Throwable $e) {
+            $this->tracingService?->recordException($e, $span);
+            throw $e;
+        } finally {
+            $this->tracingService?->endSpan($span, $scope);
         }
-
-        Log::info('Batch notifications created and queued', [
-            'batch_id' => $batchId,
-            'count' => count($created),
-        ]);
-
-        return $created;
     }
 
     /**

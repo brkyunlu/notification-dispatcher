@@ -4,6 +4,7 @@ namespace App\Modules\Notification\Jobs;
 
 use App\Modules\Delivery\Services\DeliveryService;
 use App\Modules\Notification\Models\Notification;
+use App\Modules\Observability\Services\TracingService;
 use App\Shared\Enums\Status;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,6 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use OpenTelemetry\API\Trace\SpanKind;
 
 class ProcessNotificationJob implements ShouldQueue
 {
@@ -45,30 +47,38 @@ class ProcessNotificationJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(DeliveryService $deliveryService): void
+    public function handle(DeliveryService $deliveryService, ?TracingService $tracingService = null): void
     {
-        // Check if notification was cancelled
-        $this->notification->refresh();
-        if ($this->notification->status === Status::CANCELLED) {
-            Log::info('Notification cancelled, skipping processing', [
-                'notification_id' => $this->notification->id,
-            ]);
-            return;
-        }
-
-        // Mark as processing
-        $this->notification->markAsProcessing();
-        $this->notification->incrementAttempts();
-
-        Log::info('Processing notification', [
-            'notification_id' => $this->notification->id,
-            'channel' => $this->notification->channel->value,
-            'priority' => $this->notification->priority->value,
-            'attempt' => $this->notification->attempts,
-            'provider' => $deliveryService->getProviderName(),
-        ]);
+        [$span, $scope] = $tracingService?->startSpan('ProcessNotificationJob.handle', [
+            'notification.id' => $this->notification->id,
+            'notification.channel' => $this->notification->channel->value,
+            'notification.priority' => $this->notification->priority->value,
+            'notification.attempt' => $this->notification->attempts + 1,
+        ], SpanKind::KIND_CONSUMER) ?? [null, null];
 
         try {
+            // Check if notification was cancelled
+            $this->notification->refresh();
+            if ($this->notification->status === Status::CANCELLED) {
+                Log::info('Notification cancelled, skipping processing', [
+                    'notification_id' => $this->notification->id,
+                ]);
+                $tracingService?->addAttribute('notification.cancelled', true, $span);
+                return;
+            }
+
+            // Mark as processing
+            $this->notification->markAsProcessing();
+            $this->notification->incrementAttempts();
+
+            Log::info('Processing notification', [
+                'notification_id' => $this->notification->id,
+                'channel' => $this->notification->channel->value,
+                'priority' => $this->notification->priority->value,
+                'attempt' => $this->notification->attempts,
+                'provider' => $deliveryService->getProviderName(),
+            ]);
+
             // Deliver notification via DeliveryService
             // (handles rate limiting, circuit breaker, and provider)
             $response = $deliveryService->deliver($this->notification);
@@ -77,6 +87,9 @@ class ProcessNotificationJob implements ShouldQueue
             $externalId = $response['message_id'] ?? null;
             $this->notification->markAsSent($externalId);
 
+            $tracingService?->addAttribute('notification.external_message_id', $externalId, $span);
+            $tracingService?->addAttribute('notification.status', 'sent', $span);
+
             Log::info('Notification sent successfully', [
                 'notification_id' => $this->notification->id,
                 'external_message_id' => $externalId,
@@ -84,6 +97,8 @@ class ProcessNotificationJob implements ShouldQueue
             ]);
 
         } catch (\RuntimeException $e) {
+            $tracingService?->recordException($e, $span);
+            
             $this->notification->markAsFailed($e->getMessage());
 
             Log::error('Notification sending failed', [
@@ -99,10 +114,13 @@ class ProcessNotificationJob implements ShouldQueue
             }
 
             // Move to dead letter queue
+            $tracingService?->addAttribute('notification.dead_letter', true, $span);
             Log::warning('Notification moved to dead letter queue', [
                 'notification_id' => $this->notification->id,
                 'attempts' => $this->notification->attempts,
             ]);
+        } finally {
+            $tracingService?->endSpan($span, $scope);
         }
     }
 
