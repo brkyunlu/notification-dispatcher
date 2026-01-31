@@ -118,7 +118,7 @@ class NotificationService
 
         // Set channel from template if not provided
         if (!isset($data['channel'])) {
-            $data['channel'] = $template->channel;
+            $data['channel'] = $template->channel->value;
         }
 
         // Validate channel matches template
