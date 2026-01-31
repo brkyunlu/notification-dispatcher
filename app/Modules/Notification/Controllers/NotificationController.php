@@ -86,7 +86,7 @@ class NotificationController extends Controller
             
         } catch (\RuntimeException $e) {
             // Handle idempotency and business logic errors
-            $statusCode = $e->getCode() ?: Response::HTTP_BAD_REQUEST;
+            $statusCode = is_int($e->getCode()) && $e->getCode() > 0 ? $e->getCode() : Response::HTTP_BAD_REQUEST;
             
             return response()->json([
                 'error' => [

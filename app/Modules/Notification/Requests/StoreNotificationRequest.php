@@ -29,10 +29,11 @@ class StoreNotificationRequest extends FormRequest
             // Single notification
             'recipient' => 'required_without:notifications|string',
             'channel' => ['required_without:notifications', Rule::enum(Channel::class)],
-            'content' => 'required_without:notifications|string',
+            'content' => 'required_without_all:notifications,template_id|string',
             'subject' => 'nullable|string',
             'priority' => ['nullable', Rule::enum(Priority::class)],
             'template_id' => 'nullable|uuid|exists:templates,id',
+            'variables' => 'nullable|array',
             'scheduled_at' => 'nullable|date|after:now',
             'metadata' => 'nullable|array',
             
@@ -40,10 +41,11 @@ class StoreNotificationRequest extends FormRequest
             'notifications' => 'required_without:recipient|array|min:1|max:1000',
             'notifications.*.recipient' => 'required|string',
             'notifications.*.channel' => ['required', Rule::enum(Channel::class)],
-            'notifications.*.content' => 'required|string',
+            'notifications.*.content' => 'required_without:notifications.*.template_id|string',
             'notifications.*.subject' => 'nullable|string',
             'notifications.*.priority' => ['nullable', Rule::enum(Priority::class)],
             'notifications.*.template_id' => 'nullable|uuid|exists:templates,id',
+            'notifications.*.variables' => 'nullable|array',
             'notifications.*.scheduled_at' => 'nullable|date|after:now',
             'notifications.*.metadata' => 'nullable|array',
         ];
@@ -58,7 +60,7 @@ class StoreNotificationRequest extends FormRequest
             // Single notification
             'recipient.required_without' => 'Recipient is required',
             'channel.required_without' => 'Channel is required',
-            'content.required_without' => 'Content is required',
+            'content.required_without_all' => 'Content is required (unless using template)',
             'channel.Illuminate\Validation\Rules\Enum' => 'Channel must be one of: sms, email, push',
             'priority.Illuminate\Validation\Rules\Enum' => 'Priority must be one of: low, normal, high',
             'scheduled_at.after' => 'Scheduled time must be in the future',
@@ -71,7 +73,7 @@ class StoreNotificationRequest extends FormRequest
             'notifications.max' => 'Maximum 1000 notifications allowed per batch',
             'notifications.*.recipient.required' => 'Recipient is required for all notifications',
             'notifications.*.channel.required' => 'Channel is required for all notifications',
-            'notifications.*.content.required' => 'Content is required for all notifications',
+            'notifications.*.content.required_without' => 'Content is required for all notifications (unless using template)',
             'notifications.*.channel.Illuminate\Validation\Rules\Enum' => 'Channel must be one of: sms, email, push',
             'notifications.*.scheduled_at.after' => 'Scheduled time must be in the future',
         ];

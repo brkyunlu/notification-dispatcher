@@ -17,13 +17,15 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->enum('channel', ['sms', 'email', 'push']);
             $table->text('content');
-            $table->string('subject')->nullable(); // For email channel
-            $table->json('variables')->nullable(); // Available template variables
+            $table->string('subject')->nullable();
+            $table->json('variables')->nullable();
+            $table->text('description')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
-            
-            // Indexes
+
+            $table->index('slug');
             $table->index('channel');
-            $table->index('created_at');
+            $table->index('is_active');
         });
     }
 

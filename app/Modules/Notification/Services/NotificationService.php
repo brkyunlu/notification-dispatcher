@@ -4,6 +4,7 @@ namespace App\Modules\Notification\Services;
 
 use App\Modules\Notification\Jobs\ProcessNotificationJob;
 use App\Modules\Notification\Models\Notification;
+use App\Modules\Template\Models\Template;
 use App\Shared\Enums\Priority;
 use App\Shared\Enums\Status;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -31,6 +32,11 @@ class NotificationService
                     409
                 );
             }
+        }
+
+        // Apply template if provided
+        if (isset($data['template_id'])) {
+            $data = $this->applyTemplate($data);
         }
 
         // Ensure status is set
@@ -74,6 +80,49 @@ class NotificationService
                 500
             );
         }
+    }
+
+    /**
+     * Apply template to notification data
+     */
+    private function applyTemplate(array $data): array
+    {
+        $template = Template::find($data['template_id']);
+
+        if (!$template) {
+            throw new \RuntimeException('Template not found.', 404);
+        }
+
+        if (!$template->is_active) {
+            throw new \RuntimeException('Template is not active.', 400);
+        }
+
+        // Get variables from request
+        $variables = $data['variables'] ?? [];
+
+        // Render template
+        $rendered = $template->render($variables);
+
+        // Override content and subject from template
+        $data['content'] = $rendered['content'];
+        if ($rendered['subject']) {
+            $data['subject'] = $rendered['subject'];
+        }
+
+        // Set channel from template if not provided
+        if (!isset($data['channel'])) {
+            $data['channel'] = $template->channel;
+        }
+
+        // Validate channel matches template
+        if (isset($data['channel']) && $data['channel'] !== $template->channel->value) {
+            throw new \RuntimeException(
+                'Channel mismatch. Template is for ' . $template->channel->value . ' channel.',
+                400
+            );
+        }
+
+        return $data;
     }
 
     /**
@@ -126,6 +175,11 @@ class NotificationService
 
         foreach ($notifications as $notificationData) {
             $notificationData['batch_id'] = $batchId;
+            
+            // Apply template if provided
+            if (isset($notificationData['template_id'])) {
+                $notificationData = $this->applyTemplate($notificationData);
+            }
             
             // Ensure status is set
             if (!isset($notificationData['status'])) {
