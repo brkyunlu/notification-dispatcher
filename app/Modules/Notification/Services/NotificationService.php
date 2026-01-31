@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Services;
+namespace App\Modules\Notification\Services;
 
-use App\Enums\Status;
-use App\Jobs\ProcessNotificationJob;
-use App\Models\Notification;
-use Illuminate\Support\Str;
+use App\Modules\Notification\Jobs\ProcessNotificationJob;
+use App\Modules\Notification\Models\Notification;
+use App\Shared\Enums\Priority;
+use App\Shared\Enums\Status;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Database\QueryException;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class NotificationService
 {
@@ -35,6 +36,11 @@ class NotificationService
         // Ensure status is set
         if (!isset($data['status'])) {
             $data['status'] = Status::PENDING;
+        }
+
+        // Ensure priority is set
+        if (!isset($data['priority'])) {
+            $data['priority'] = Priority::NORMAL;
         }
 
         try {
@@ -102,6 +108,11 @@ class NotificationService
             // Ensure status is set
             if (!isset($notificationData['status'])) {
                 $notificationData['status'] = Status::PENDING;
+            }
+            
+            // Ensure priority is set
+            if (!isset($notificationData['priority'])) {
+                $notificationData['priority'] = Priority::NORMAL;
             }
             
             $notification = Notification::create($notificationData);

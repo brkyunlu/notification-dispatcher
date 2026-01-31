@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Modules\Delivery\Services;
 
-use App\Enums\Channel;
+use App\Shared\Enums\Channel;
 use Illuminate\Support\Facades\Redis;
 
 class RateLimiterService

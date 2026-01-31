@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Modules\Notification\Controllers;
 
-use App\Enums\Channel;
-use App\Enums\Priority;
-use App\Enums\Status;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreNotificationRequest;
-use App\Http\Resources\NotificationCollection;
-use App\Http\Resources\NotificationResource;
-use App\Services\NotificationService;
+use App\Modules\Notification\Requests\StoreNotificationRequest;
+use App\Modules\Notification\Resources\NotificationCollection;
+use App\Modules\Notification\Resources\NotificationResource;
+use App\Modules\Notification\Services\NotificationService;
+use App\Shared\Enums\Channel;
+use App\Shared\Enums\Priority;
+use App\Shared\Enums\Status;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

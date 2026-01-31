@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Modules\Template\Models;
 
-use App\Enums\Channel;
+use App\Modules\Notification\Models\Notification;
+use App\Shared\Enums\Channel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

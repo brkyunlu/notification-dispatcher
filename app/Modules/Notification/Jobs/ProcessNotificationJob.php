@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Modules\Notification\Jobs;
 
-use App\Enums\Status;
-use App\Models\Notification;
-use App\Services\RateLimiterService;
+use App\Modules\Delivery\Services\RateLimiterService;
+use App\Modules\Notification\Models\Notification;
+use App\Shared\Enums\Status;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -160,4 +160,3 @@ class ProcessNotificationJob implements ShouldQueue
         ]);
     }
 }
-

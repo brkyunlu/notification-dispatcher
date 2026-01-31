@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Modules\Notification\Models;
 
-use App\Enums\Channel;
-use App\Enums\Priority;
-use App\Enums\Status;
+use App\Modules\Template\Models\Template;
+use App\Shared\Enums\Channel;
+use App\Shared\Enums\Priority;
+use App\Shared\Enums\Status;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
