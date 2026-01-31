@@ -3,6 +3,7 @@
 namespace App\Modules\Delivery\Services;
 
 use App\Modules\Delivery\Contracts\ProviderInterface;
+use App\Modules\Delivery\Exceptions\DeliveryException;
 use App\Modules\Notification\Models\Notification;
 use Illuminate\Support\Facades\Log;
 
@@ -19,7 +20,7 @@ class DeliveryService
      *
      * @param Notification $notification
      * @return array
-     * @throws \RuntimeException
+     * @throws DeliveryException
      */
     public function deliver(Notification $notification): array
     {
@@ -32,16 +33,13 @@ class DeliveryService
                 'channel' => $channel->value,
             ]);
 
-            throw new \RuntimeException(
-                "Circuit breaker is open for channel {$channel->value}. Service temporarily unavailable.",
-                503
-            );
+            throw DeliveryException::circuitBreakerOpen($channel->value);
         }
 
         // Apply rate limiting
         try {
             $this->rateLimiter->waitForSlot($channel);
-        } catch (\RuntimeException $e) {
+        } catch (DeliveryException $e) {
             Log::error('Rate limit exceeded', [
                 'notification_id' => $notification->id,
                 'channel' => $channel->value,
@@ -64,7 +62,7 @@ class DeliveryService
 
             return $result;
 
-        } catch (\RuntimeException $e) {
+        } catch (DeliveryException $e) {
             // Record failure for circuit breaker
             $this->circuitBreaker->recordFailure($channel);
 

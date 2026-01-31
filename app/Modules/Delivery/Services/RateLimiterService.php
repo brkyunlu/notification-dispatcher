@@ -2,6 +2,7 @@
 
 namespace App\Modules\Delivery\Services;
 
+use App\Modules\Delivery\Exceptions\DeliveryException;
 use App\Shared\Enums\Channel;
 use Illuminate\Support\Facades\Redis;
 
@@ -54,10 +55,7 @@ class RateLimiterService
         }
 
         if ($attempt >= $maxAttempts) {
-            throw new \RuntimeException(
-                "Rate limit exceeded for channel {$channel->value}",
-                429
-            );
+            throw DeliveryException::rateLimitExceeded($channel->value);
         }
     }
 

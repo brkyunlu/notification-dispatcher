@@ -3,6 +3,7 @@
 namespace App\Modules\Delivery\Providers;
 
 use App\Modules\Delivery\Contracts\ProviderInterface;
+use App\Modules\Delivery\Exceptions\DeliveryException;
 use App\Modules\Notification\Models\Notification;
 use App\Shared\Enums\Channel;
 use Illuminate\Support\Facades\Http;
@@ -15,7 +16,7 @@ class WebhookProvider implements ProviderInterface
      *
      * @param Notification $notification
      * @return array
-     * @throws \RuntimeException
+     * @throws DeliveryException
      */
     public function send(Notification $notification): array
     {
@@ -49,9 +50,9 @@ class WebhookProvider implements ProviderInterface
                 ->post($webhookUrl, $payload);
 
             if (!$response->successful()) {
-                throw new \RuntimeException(
-                    "Webhook provider returned error: {$response->status()}",
-                    $response->status()
+                throw DeliveryException::providerError(
+                    $this->getName(),
+                    "HTTP {$response->status()}"
                 );
             }
 
@@ -62,6 +63,8 @@ class WebhookProvider implements ProviderInterface
                 'response_code' => $response->status(),
             ];
 
+        } catch (DeliveryException $e) {
+            throw $e;
         } catch (\Exception $e) {
             Log::error('Webhook provider failed', [
                 'provider' => $this->getName(),
@@ -69,10 +72,7 @@ class WebhookProvider implements ProviderInterface
                 'error' => $e->getMessage(),
             ]);
 
-            throw new \RuntimeException(
-                "Webhook provider failed: {$e->getMessage()}",
-                $e->getCode() ?: 500
-            );
+            throw DeliveryException::deliveryFailed($e->getMessage());
         }
     }
 

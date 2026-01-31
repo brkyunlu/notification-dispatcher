@@ -2,6 +2,7 @@
 
 namespace App\Modules\Template\Services;
 
+use App\Modules\Template\Exceptions\TemplateException;
 use App\Modules\Template\Models\Template;
 use App\Shared\Enums\Channel;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -99,10 +100,7 @@ class TemplateService
         $usageCount = $template->notifications()->count();
         
         if ($usageCount > 0) {
-            throw new \RuntimeException(
-                "Cannot delete template. It is currently used by {$usageCount} notification(s).",
-                409
-            );
+            throw TemplateException::inUse($usageCount);
         }
 
         return $template->delete();

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Template\Controllers;
 
+use App\Modules\Template\Exceptions\TemplateException;
 use App\Modules\Template\Requests\StoreTemplateRequest;
 use App\Modules\Template\Resources\TemplateResource;
 use App\Modules\Template\Services\TemplateService;
@@ -51,10 +52,7 @@ class TemplateController
         $template = $this->templateService->find($id);
 
         if (!$template) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Template not found.',
-            ], Response::HTTP_NOT_FOUND);
+            throw TemplateException::notFound($id);
         }
 
         return response()->json([
@@ -68,21 +66,14 @@ class TemplateController
      */
     public function store(StoreTemplateRequest $request): JsonResponse
     {
-        try {
-            $template = $this->templateService->create($request->validated());
+        // No try-catch needed - global handler catches QueryException for duplicate slug
+        $template = $this->templateService->create($request->validated());
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Template created successfully.',
-                'data' => new TemplateResource($template),
-            ], Response::HTTP_CREATED);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to create template: ' . $e->getMessage(),
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Template created successfully.',
+            'data' => new TemplateResource($template),
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -93,27 +84,17 @@ class TemplateController
         $template = $this->templateService->find($id);
 
         if (!$template) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Template not found.',
-            ], Response::HTTP_NOT_FOUND);
+            throw TemplateException::notFound($id);
         }
 
-        try {
-            $updated = $this->templateService->update($template, $request->validated());
+        // No try-catch needed - global handler catches exceptions
+        $updated = $this->templateService->update($template, $request->validated());
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Template updated successfully.',
-                'data' => new TemplateResource($updated),
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to update template: ' . $e->getMessage(),
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Template updated successfully.',
+            'data' => new TemplateResource($updated),
+        ]);
     }
 
     /**
@@ -124,32 +105,16 @@ class TemplateController
         $template = $this->templateService->find($id);
 
         if (!$template) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Template not found.',
-            ], Response::HTTP_NOT_FOUND);
+            throw TemplateException::notFound($id);
         }
 
-        try {
-            $this->templateService->delete($template);
+        // No try-catch needed - TemplateException::inUse() is caught by global handler
+        $this->templateService->delete($template);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Template deleted successfully.',
-            ]);
-
-        } catch (\RuntimeException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], $e->getCode() ?: Response::HTTP_INTERNAL_SERVER_ERROR);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to delete template: ' . $e->getMessage(),
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Template deleted successfully.',
+        ]);
     }
 
     /**
@@ -160,10 +125,7 @@ class TemplateController
         $template = $this->templateService->find($id);
 
         if (!$template) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Template not found.',
-            ], Response::HTTP_NOT_FOUND);
+            throw TemplateException::notFound($id);
         }
 
         $variables = $request->input('variables', []);

@@ -2,13 +2,13 @@
 
 namespace App\Modules\Notification\Services;
 
+use App\Modules\Notification\Exceptions\NotificationException;
 use App\Modules\Notification\Jobs\ProcessNotificationJob;
 use App\Modules\Notification\Models\Notification;
 use App\Modules\Template\Models\Template;
 use App\Shared\Enums\Priority;
 use App\Shared\Enums\Status;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\QueryException;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -27,10 +27,7 @@ class NotificationService
             // Check if idempotency key already exists
             $existing = Notification::where('idempotency_key', $data['idempotency_key'])->first();
             if ($existing) {
-                throw new \RuntimeException(
-                    'This request has already been processed. Idempotency key: ' . $data['idempotency_key'],
-                    409
-                );
+                throw NotificationException::duplicateIdempotency($data['idempotency_key']);
             }
         }
 
@@ -67,19 +64,11 @@ class NotificationService
         } catch (UniqueConstraintViolationException $e) {
             // Handle duplicate idempotency key
             if (str_contains($e->getMessage(), 'idempotency_key')) {
-                throw new \RuntimeException(
-                    'This request has already been processed. Please use a different idempotency key.',
-                    409
-                );
+                throw NotificationException::duplicateIdempotency($data['idempotency_key'] ?? 'unknown');
             }
-            throw $e;
-        } catch (QueryException $e) {
-            // Handle other database errors
-            throw new \RuntimeException(
-                'Failed to create notification: ' . $e->getMessage(),
-                500
-            );
+            throw $e; // Let global handler catch other unique constraint violations
         }
+        // Other QueryExceptions will be caught by the global handler
     }
 
     /**
@@ -90,11 +79,11 @@ class NotificationService
         $template = Template::find($data['template_id']);
 
         if (!$template) {
-            throw new \RuntimeException('Template not found.', 404);
+            throw NotificationException::templateNotFound();
         }
 
         if (!$template->is_active) {
-            throw new \RuntimeException('Template is not active.', 400);
+            throw NotificationException::templateInactive();
         }
 
         // Get variables from request
@@ -116,10 +105,7 @@ class NotificationService
 
         // Validate channel matches template
         if (isset($data['channel']) && $data['channel'] !== $template->channel->value) {
-            throw new \RuntimeException(
-                'Channel mismatch. Template is for ' . $template->channel->value . ' channel.',
-                400
-            );
+            throw NotificationException::channelMismatch($template->channel->value);
         }
 
         return $data;
