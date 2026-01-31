@@ -3,7 +3,7 @@ FROM php:8.3-fpm
 # Set working directory
 WORKDIR /var/www
 
-# Install system dependencies
+# Install system dependencies (include PHPIZE_DEPS for PECL extensions like pcov)
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -14,7 +14,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libzip-dev \
     libpq-dev \
-    supervisor
+    supervisor \
+    $PHPIZE_DEPS
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -24,6 +25,9 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Install Redis extension
 RUN pecl install redis && docker-php-ext-enable redis
+
+# Install PCOV for code coverage (php artisan test --coverage)
+RUN pecl install pcov && docker-php-ext-enable pcov
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
