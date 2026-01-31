@@ -14,6 +14,8 @@ use App\Shared\Enums\Status;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class NotificationController extends Controller
 {
@@ -127,6 +129,23 @@ class NotificationController extends Controller
     {
         // No try-catch needed - global handler catches exceptions
         $batchId = $request->query('batch_id');
+
+        // Validate batch_id only if the client provided the parameter.
+        // If batch_id is missing, we return global stats.
+        if ($request->query->has('batch_id')) {
+            if (!is_string($batchId) || trim($batchId) === '') {
+                throw ValidationException::withMessages([
+                    'batch_id' => 'The batch_id field cannot be empty.',
+                ]);
+            }
+
+            if (!Str::isUuid($batchId)) {
+                throw ValidationException::withMessages([
+                    'batch_id' => 'The batch_id must be a valid UUID.',
+                ]);
+            }
+        }
+
         $stats = $this->notificationService->getStats($batchId);
 
         return response()->json([

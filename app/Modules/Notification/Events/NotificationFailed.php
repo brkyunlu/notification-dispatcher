@@ -54,6 +54,9 @@ class NotificationFailed implements ShouldBroadcast
             'last_error' => $this->notification->last_error,
             'error' => $this->error,
             'batch_id' => $this->notification->batch_id,
+            'subject' => $this->notification->subject,
+            'content' => $this->notification->content,
+            'created_at' => $this->notification->created_at?->toIso8601String(),
         ];
     }
 

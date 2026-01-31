@@ -51,6 +51,9 @@ class NotificationQueued implements ShouldBroadcast
             'priority' => $this->notification->priority->value,
             'batch_id' => $this->notification->batch_id,
             'scheduled_at' => $this->notification->scheduled_at?->toIso8601String(),
+            'subject' => $this->notification->subject,
+            'content' => $this->notification->content,
+            'created_at' => $this->notification->created_at?->toIso8601String(),
         ];
     }
 

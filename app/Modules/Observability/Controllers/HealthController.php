@@ -2,6 +2,7 @@
 
 namespace App\Modules\Observability\Controllers;
 
+use App\Modules\Observability\Exceptions\ObservabilityException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -77,7 +78,7 @@ class HealthController
             $latency = round((microtime(true) - $start) * 1000, 2);
 
             if ($retrieved !== $testValue) {
-                throw new \Exception('Cache write/read mismatch');
+                throw ObservabilityException::cacheUnhealthy('Cache write/read mismatch');
             }
 
             return [
@@ -129,7 +130,7 @@ class HealthController
                 ];
             }
 
-            throw new \Exception("HTTP {$httpCode}");
+            throw ObservabilityException::queueUnhealthy("HTTP {$httpCode}");
         } catch (\Exception $e) {
             return [
                 'status' => 'unhealthy',

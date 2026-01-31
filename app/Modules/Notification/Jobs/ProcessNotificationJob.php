@@ -99,7 +99,8 @@ class ProcessNotificationJob implements ShouldQueue
         } catch (\RuntimeException $e) {
             $tracingService?->recordException($e, $span);
             
-            $this->notification->markAsFailed($e->getMessage());
+            // Store error temporarily but don't mark as FAILED yet (allows retry)
+            $this->notification->update(['last_error' => $e->getMessage()]);
 
             Log::error('Notification sending failed', [
                 'notification_id' => $this->notification->id,
@@ -110,10 +111,17 @@ class ProcessNotificationJob implements ShouldQueue
 
             // Re-throw if can retry
             if ($this->notification->canRetry()) {
+                Log::info('Notification will be retried', [
+                    'notification_id' => $this->notification->id,
+                    'attempt' => $this->notification->attempts,
+                    'max_attempts' => config('notification.retry.max_attempts', 5),
+                ]);
                 throw $e;
             }
 
-            // Move to dead letter queue
+            // Retry limit reached - mark as permanently failed
+            $this->notification->markAsFailed($e->getMessage());
+            
             $tracingService?->addAttribute('notification.dead_letter', true, $span);
             Log::warning('Notification moved to dead letter queue', [
                 'notification_id' => $this->notification->id,

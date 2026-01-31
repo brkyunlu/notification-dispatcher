@@ -149,7 +149,7 @@ class Notification extends Model
         ]);
         
         // Broadcast event
-        broadcast(new NotificationFailed($this, $error))->toOthers();
+        event(new NotificationFailed($this, $error));
     }
 
     /**
@@ -170,11 +170,25 @@ class Notification extends Model
 
     /**
      * Check if notification can be retried
+     * 
+     * A notification can be retried if:
+     * - Attempts are less than max attempts
+     * - Status is not CANCELLED or DELIVERED (these are truly final)
+     * - FAILED status is allowed to retry (temporary failure)
      */
     public function canRetry(): bool
     {
         $maxAttempts = config('notification.retry.max_attempts', 5);
-        return $this->attempts < $maxAttempts && !$this->status->isFinal();
+        
+        // Cannot retry if max attempts reached
+        if ($this->attempts >= $maxAttempts) {
+            return false;
+        }
+        
+        // Cannot retry CANCELLED or DELIVERED statuses
+        $nonRetryableStatuses = [Status::CANCELLED, Status::DELIVERED];
+        
+        return !in_array($this->status, $nonRetryableStatuses, strict: true);
     }
 
     /**

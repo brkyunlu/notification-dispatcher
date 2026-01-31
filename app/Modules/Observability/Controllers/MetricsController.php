@@ -3,6 +3,8 @@
 namespace App\Modules\Observability\Controllers;
 
 use App\Modules\Notification\Models\Notification;
+use App\Modules\Observability\Exceptions\ObservabilityException;
+use App\Shared\Enums\Status;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -90,7 +92,48 @@ class MetricsController
     private function getQueueMetrics(): array
     {
         try {
-            // RabbitMQ Management API endpoint
+            // Get priority breakdown from database (queued notifications)
+            // This is the most accurate source as it reflects actual pending jobs
+            $priorityBreakdown = Notification::where('status', Status::QUEUED)
+                ->selectRaw('priority, count(*) as count')
+                ->groupBy('priority')
+                ->pluck('count', 'priority')
+                ->toArray();
+
+            $totalQueued = array_sum($priorityBreakdown);
+
+            // Get RabbitMQ stats for additional metrics (consumers, etc.)
+            $rabbitmqStats = $this->getRabbitMQStats();
+
+            return [
+                'connection' => 'rabbitmq',
+                'queue_name' => 'notifications',
+                'messages_ready' => $totalQueued,
+                'messages_unacknowledged' => $rabbitmqStats['messages_unacknowledged'] ?? 0,
+                'messages_total' => $totalQueued + ($rabbitmqStats['messages_unacknowledged'] ?? 0),
+                'consumers' => $rabbitmqStats['consumers'] ?? 0,
+                'priority_breakdown' => [
+                    'high' => $priorityBreakdown['high'] ?? 0,
+                    'normal' => $priorityBreakdown['normal'] ?? 0,
+                    'low' => $priorityBreakdown['low'] ?? 0,
+                ],
+                'status' => 'healthy',
+            ];
+        } catch (\Exception $e) {
+            return [
+                'connection' => config('queue.default'),
+                'status' => 'error',
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
+
+    /**
+     * Get RabbitMQ stats from Management API
+     */
+    private function getRabbitMQStats(): array
+    {
+        try {
             $rabbitmqHost = config('queue.connections.rabbitmq.host', 'rabbitmq');
             $rabbitmqUser = config('queue.connections.rabbitmq.user', 'notification');
             $rabbitmqPass = config('queue.connections.rabbitmq.password', 'secret');
@@ -110,23 +153,17 @@ class MetricsController
                 $queueData = json_decode($response, true);
                 
                 return [
-                    'connection' => 'rabbitmq',
-                    'queue_name' => 'notifications',
-                    'messages_ready' => $queueData['messages_ready'] ?? 0,
                     'messages_unacknowledged' => $queueData['messages_unacknowledged'] ?? 0,
-                    'messages_total' => $queueData['messages'] ?? 0,
                     'consumers' => $queueData['consumers'] ?? 0,
-                    'status' => 'healthy',
                 ];
             }
         } catch (\Exception $e) {
-            // Fallback if RabbitMQ Management API is not accessible
+            // Silently fail - not critical
         }
 
         return [
-            'connection' => config('queue.default'),
-            'status' => 'unknown',
-            'note' => 'RabbitMQ Management API not accessible',
+            'messages_unacknowledged' => 0,
+            'consumers' => 0,
         ];
     }
 
