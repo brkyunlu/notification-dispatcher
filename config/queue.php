@@ -72,6 +72,43 @@ return [
             'after_commit' => false,
         ],
 
+        'rabbitmq' => [
+            'driver' => 'rabbitmq',
+            'host' => env('RABBITMQ_HOST', 'rabbitmq'),
+            'port' => env('RABBITMQ_PORT', 5672),
+            'user' => env('RABBITMQ_USER', 'notification'),
+            'password' => env('RABBITMQ_PASSWORD', 'secret'),
+            'vhost' => env('RABBITMQ_VHOST', 'notifications'),
+            'queue' => env('RABBITMQ_QUEUE', 'notifications'),
+
+            'options' => [
+                'ssl_options' => [
+                    'cafile' => env('RABBITMQ_SSL_CAFILE'),
+                    'local_cert' => env('RABBITMQ_SSL_LOCALCERT'),
+                    'local_key' => env('RABBITMQ_SSL_LOCALKEY'),
+                    'verify_peer' => env('RABBITMQ_SSL_VERIFY_PEER', false),
+                    'passphrase' => env('RABBITMQ_SSL_PASSPHRASE'),
+                ],
+                'queue' => [
+                    'job' => \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\Jobs\RabbitMQJob::class,
+                    'exchange' => env('RABBITMQ_EXCHANGE', 'notifications'),
+                    'exchange_type' => env('RABBITMQ_EXCHANGE_TYPE', 'direct'),
+                    'exchange_routing_key' => '',
+                    'prioritize_delayed' => false,
+                    'queue_max_priority' => 255,
+                    'reroute_failed' => true,
+                    'failed_exchange' => 'notifications.failed',
+                    'failed_routing_key' => 'failed',
+                    // Queue and exchange declaration
+                    'declare' => true,
+                    'bind' => true,
+                    'exchange_declare' => true,
+                ],
+            ],
+
+            'after_commit' => false,
+        ],
+
     ],
 
     /*

@@ -60,21 +60,44 @@ services:
       - dispatcher-network
     command: redis-server --appendonly yes
 
-  horizon:
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: notification-dispatcher-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-notification}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-secret}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST:-notifications}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - dispatcher-network
+
+  queue-worker:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: notification-dispatcher-horizon
+    container_name: notification-dispatcher-queue-worker
     restart: unless-stopped
     working_dir: /var/www
     volumes:
       - ./:/var/www
-    command: php artisan horizon
+    command: php artisan queue:work rabbitmq --queue=notifications --tries=5 --timeout=90 --sleep=1
     networks:
       - dispatcher-network
     depends_on:
-      - app
-      - redis
+      rabbitmq:
+        condition: service_healthy
+      app:
+        condition: service_started
 
   reverb:
     build:
@@ -102,4 +125,6 @@ volumes:
   mysql_data:
     driver: local
   redis_data:
+    driver: local
+  rabbitmq_data:
     driver: local

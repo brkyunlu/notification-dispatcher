@@ -20,14 +20,26 @@ class ProcessNotificationJob implements ShouldQueue
     public $backoff;
 
     /**
+     * RabbitMQ priority (0-255, higher = more priority)
+     * Used by laravel-queue-rabbitmq package
+     */
+    public int $priority = 100;
+
+    /**
      * Create a new job instance.
      */
     public function __construct(
-        public Notification $notification
+        public Notification $notification,
+        ?int $rabbitmqPriority = null
     ) {
         // Load retry configuration from config
         $this->tries = config('notification.retry.max_attempts', 5);
         $this->backoff = config('notification.retry.backoff', [60, 300, 1800, 7200]);
+        
+        // Set RabbitMQ priority if provided
+        if ($rabbitmqPriority !== null) {
+            $this->priority = $rabbitmqPriority;
+        }
     }
 
     /**

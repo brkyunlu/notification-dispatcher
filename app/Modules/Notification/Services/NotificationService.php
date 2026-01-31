@@ -86,12 +86,34 @@ class NotificationService
             return;
         }
 
-        $queueName = $notification->priority->getQueueName();
+        // RabbitMQ native priority (0-255, higher = more priority)
+        $rabbitmqPriority = $this->mapPriorityToRabbitMQ($notification->priority);
         
-        ProcessNotificationJob::dispatch($notification)
-            ->onQueue($queueName);
+        // Dispatch with RabbitMQ priority
+        ProcessNotificationJob::dispatch($notification, $rabbitmqPriority)
+            ->onQueue('notifications')
+            ->onConnection('rabbitmq');
             
         $notification->markAsQueued();
+        
+        Log::debug('Notification dispatched to RabbitMQ', [
+            'notification_id' => $notification->id,
+            'priority' => $notification->priority->value,
+            'rabbitmq_priority' => $rabbitmqPriority,
+        ]);
+    }
+
+    /**
+     * Map Laravel Priority enum to RabbitMQ priority (0-255)
+     * Higher value = higher priority in RabbitMQ
+     */
+    private function mapPriorityToRabbitMQ(Priority $priority): int
+    {
+        return match ($priority) {
+            Priority::HIGH => 250,
+            Priority::NORMAL => 100,
+            Priority::LOW => 10,
+        };
     }
 
     /**
