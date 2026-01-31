@@ -3,12 +3,19 @@
 use App\Modules\Notification\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
-// Notification routes
-Route::prefix('v1')->group(function () {
-    // Notifications - stats must come before {id} route
-    Route::get('/notifications/stats', [NotificationController::class, 'stats']);
-    Route::get('/notifications', [NotificationController::class, 'index']);
-    Route::post('/notifications', [NotificationController::class, 'store']); // Supports both single and batch
-    Route::get('/notifications/{id}', [NotificationController::class, 'show']);
-    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
+// API v1 routes - protected by API key authentication
+Route::prefix('v1')->middleware('api.key')->group(function () {
+    
+    // Read operations (requires 'read' permission)
+    Route::middleware('api.key:read')->group(function () {
+        Route::get('/notifications/stats', [NotificationController::class, 'stats']);
+        Route::get('/notifications', [NotificationController::class, 'index']);
+        Route::get('/notifications/{id}', [NotificationController::class, 'show']);
+    });
+
+    // Write operations (requires 'write' permission)
+    Route::middleware('api.key:write')->group(function () {
+        Route::post('/notifications', [NotificationController::class, 'store']); // Supports both single and batch
+        Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
+    });
 });

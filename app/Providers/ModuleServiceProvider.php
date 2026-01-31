@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Modules\Auth\Commands\GenerateApiKeyCommand;
+use App\Modules\Auth\Middleware\ApiKeyMiddleware;
 use App\Modules\Delivery\Contracts\ProviderInterface;
 use App\Modules\Delivery\Providers\WebhookProvider;
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -22,7 +25,15 @@ class ModuleServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Load module routes if needed
-        // $this->loadRoutesFrom(app_path('Modules/Notification/routes.php'));
+        // Register middleware alias
+        $router = $this->app->make(Router::class);
+        $router->aliasMiddleware('api.key', ApiKeyMiddleware::class);
+
+        // Register commands
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                GenerateApiKeyCommand::class,
+            ]);
+        }
     }
 }
