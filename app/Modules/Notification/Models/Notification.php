@@ -2,6 +2,9 @@
 
 namespace App\Modules\Notification\Models;
 
+use App\Modules\Notification\Events\NotificationFailed;
+use App\Modules\Notification\Events\NotificationQueued;
+use App\Modules\Notification\Events\NotificationSent;
 use App\Modules\Template\Models\Template;
 use App\Shared\Enums\Channel;
 use App\Shared\Enums\Priority;
@@ -99,6 +102,9 @@ class Notification extends Model
     public function markAsQueued(): void
     {
         $this->update(['status' => Status::QUEUED]);
+        
+        // Broadcast event
+        broadcast(new NotificationQueued($this))->toOthers();
     }
 
     /**
@@ -119,6 +125,9 @@ class Notification extends Model
             'sent_at' => now(),
             'external_message_id' => $externalMessageId,
         ]);
+        
+        // Broadcast event
+        broadcast(new NotificationSent($this))->toOthers();
     }
 
     /**
@@ -138,6 +147,9 @@ class Notification extends Model
             'status' => Status::FAILED,
             'last_error' => $error,
         ]);
+        
+        // Broadcast event
+        broadcast(new NotificationFailed($this, $error))->toOthers();
     }
 
     /**

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification WebSocket Test</title>
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .status.connected {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status.disconnected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .event {
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #007bff;
+            background-color: #e7f3ff;
+        }
+        .event.queued {
+            border-left-color: #ffc107;
+            background-color: #fff3cd;
+        }
+        .event.sent {
+            border-left-color: #28a745;
+            background-color: #d4edda;
+        }
+        .event.failed {
+            border-left-color: #dc3545;
+            background-color: #f8d7da;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .timestamp {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔔 Notification WebSocket Test</h1>
+        
+        <div id="status" class="status disconnected">
+            Disconnected
+        </div>
+
+        <h2>Configuration</h2>
+        <pre id="config"></pre>
+
+        <h2>Real-time Events</h2>
+        <div id="events"></div>
+    </div>
+
+    <script>
+        const config = {
+            appKey: '8quucrhcrxgfdwvnldjo',
+            wsHost: 'localhost',
+            wsPort: 8080,
+            forceTLS: false,
+            enabledTransports: ['ws', 'wss'],
+            cluster: ''
+        };
+
+        document.getElementById('config').textContent = JSON.stringify(config, null, 2);
+
+        // Initialize Pusher client
+        const pusher = new Pusher(config.appKey, {
+            wsHost: config.wsHost,
+            wsPort: config.wsPort,
+            forceTLS: config.forceTLS,
+            enabledTransports: config.enabledTransports,
+            cluster: config.cluster,
+            disableStats: true
+        });
+
+        // Update connection status
+        pusher.connection.bind('connected', () => {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = '✅ Connected to WebSocket Server';
+            statusEl.className = 'status connected';
+            addEvent('System', 'Connected', {}, 'connected');
+        });
+
+        pusher.connection.bind('disconnected', () => {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = '❌ Disconnected from WebSocket Server';
+            statusEl.className = 'status disconnected';
+        });
+
+        pusher.connection.bind('error', (err) => {
+            addEvent('System', 'Error', err, 'error');
+            console.error('Pusher error:', err);
+        });
+
+        // Subscribe to notifications channel
+        const channel = pusher.subscribe('notifications');
+
+        channel.bind('pusher:subscription_succeeded', () => {
+            addEvent('Channel', 'Subscribed to "notifications"', {}, 'subscribed');
+        });
+
+        channel.bind('pusher:subscription_error', (err) => {
+            addEvent('Channel', 'Subscription Error', err, 'error');
+        });
+
+        // Listen for notification events
+        channel.bind('notification.queued', (data) => {
+            addEvent('Notification Queued', data.id, data, 'queued');
+        });
+
+        channel.bind('notification.sent', (data) => {
+            addEvent('Notification Sent', data.id, data, 'sent');
+        });
+
+        channel.bind('notification.failed', (data) => {
+            addEvent('Notification Failed', data.id, data, 'failed');
+        });
+
+        // Add event to UI
+        function addEvent(title, subtitle, data, type = 'info') {
+            const eventsEl = document.getElementById('events');
+            const eventEl = document.createElement('div');
+            eventEl.className = `event ${type}`;
+            
+            const timestamp = new Date().toLocaleTimeString();
+            
+            eventEl.innerHTML = `
+                <strong>${title}</strong> - ${subtitle}
+                <span class="timestamp">${timestamp}</span>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+            
+            eventsEl.insertBefore(eventEl, eventsEl.firstChild);
+        }
+    </script>
+</body>
+</html>
