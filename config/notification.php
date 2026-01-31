@@ -100,4 +100,18 @@ return [
             'workers' => 1,
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Idempotency Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for idempotency key handling
+    |
+    */
+
+    'idempotency' => [
+        'enabled' => env('IDEMPOTENCY_ENABLED', true),
+        'ttl' => (int) env('IDEMPOTENCY_TTL', 86400), // 24 hours in seconds
+    ],
 ];

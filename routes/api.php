@@ -15,7 +15,8 @@ Route::prefix('v1')->middleware('api.key')->group(function () {
 
     // Write operations (requires 'write' permission)
     Route::middleware('api.key:write')->group(function () {
-        Route::post('/notifications', [NotificationController::class, 'store']); // Supports both single and batch
+        Route::post('/notifications', [NotificationController::class, 'store'])
+            ->middleware('idempotency'); // Supports idempotency via X-Idempotency-Key header
         Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
     });
 });
