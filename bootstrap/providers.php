@@ -5,4 +5,5 @@ return [
     App\Providers\HorizonServiceProvider::class,
     App\Providers\ModuleServiceProvider::class,
     App\Modules\Observability\Providers\TracingServiceProvider::class,
+    L5Swagger\L5SwaggerServiceProvider::class,
 ];

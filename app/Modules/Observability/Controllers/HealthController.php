@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use OpenApi\Attributes as OA;
 
 /**
  * Health check endpoint for monitoring system dependencies
@@ -15,7 +16,78 @@ class HealthController
 {
     /**
      * Comprehensive health check
+     *
+     * Checks database, cache (Redis), and queue (RabbitMQ). No authentication required.
      */
+    #[OA\Get(path: '/health', summary: 'Health check', tags: ['Observability'], security: [])]
+    #[OA\Response(
+        response: 200,
+        description: 'All systems healthy',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'status', type: 'string', example: 'healthy'),
+                new OA\Property(property: 'timestamp', type: 'string', format: 'date-time', example: '2026-01-31T22:00:00.000000Z'),
+                new OA\Property(
+                    property: 'checks',
+                    type: 'object',
+                    properties: [
+                        new OA\Property(
+                            property: 'database',
+                            type: 'object',
+                            properties: [
+                                new OA\Property(property: 'status', type: 'string', example: 'healthy'),
+                                new OA\Property(property: 'latency_ms', type: 'number', example: 1.23),
+                                new OA\Property(property: 'connection', type: 'string', example: 'mysql'),
+                            ]
+                        ),
+                        new OA\Property(
+                            property: 'cache',
+                            type: 'object',
+                            properties: [
+                                new OA\Property(property: 'status', type: 'string', example: 'healthy'),
+                                new OA\Property(property: 'latency_ms', type: 'number', example: 0.5),
+                                new OA\Property(property: 'driver', type: 'string', example: 'redis'),
+                            ]
+                        ),
+                        new OA\Property(
+                            property: 'queue',
+                            type: 'object',
+                            properties: [
+                                new OA\Property(property: 'status', type: 'string', example: 'healthy'),
+                                new OA\Property(property: 'latency_ms', type: 'number', example: 2.1),
+                                new OA\Property(property: 'connection', type: 'string', example: 'rabbitmq'),
+                                new OA\Property(property: 'version', type: 'string', example: '3.12.0'),
+                            ]
+                        ),
+                    ]
+                ),
+            ],
+            example: [
+                'status' => 'healthy',
+                'timestamp' => '2026-01-31T22:00:00.000000Z',
+                'checks' => [
+                    'database' => ['status' => 'healthy', 'latency_ms' => 1.23, 'connection' => 'mysql'],
+                    'cache' => ['status' => 'healthy', 'latency_ms' => 0.5, 'driver' => 'redis'],
+                    'queue' => ['status' => 'healthy', 'latency_ms' => 2.1, 'connection' => 'rabbitmq', 'version' => '3.12.0'],
+                ],
+            ]
+        )
+    )]
+    #[OA\Response(
+        response: 503,
+        description: 'One or more systems unhealthy',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'status', type: 'string', example: 'unhealthy'),
+                new OA\Property(property: 'timestamp', type: 'string', format: 'date-time'),
+                new OA\Property(
+                    property: 'checks',
+                    type: 'object',
+                    description: 'Each check has status healthy|unhealthy; unhealthy entries include error and message'
+                ),
+            ]
+        )
+    )]
     public function index(): JsonResponse
     {
         $checks = [

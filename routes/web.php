@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Observability\Controllers\HealthController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -10,3 +11,6 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+// Public health check (no auth, no /api prefix) – matches Swagger path /health
+Route::get('/health', [HealthController::class, 'index']);

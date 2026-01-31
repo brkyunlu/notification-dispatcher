@@ -1,13 +1,9 @@
 <?php
 
 use App\Modules\Notification\Controllers\NotificationController;
-use App\Modules\Observability\Controllers\HealthController;
 use App\Modules\Observability\Controllers\MetricsController;
 use App\Modules\Template\Controllers\TemplateController;
 use Illuminate\Support\Facades\Route;
-
-// Public health check endpoint (no auth required)
-Route::get('/health', [HealthController::class, 'index']);
 
 // API v1 routes - protected by API key authentication
 Route::prefix('v1')->middleware(['api.key', 'api.rate.limit'])->group(function () {
@@ -32,7 +28,9 @@ Route::prefix('v1')->middleware(['api.key', 'api.rate.limit'])->group(function (
 
     // Write operations (requires 'write' permission)
     Route::middleware('api.key:write')->group(function () {
-        // Notifications
+        // Notifications (batch route first so it matches before generic POST)
+        Route::post('/notifications/batch', [NotificationController::class, 'storeBatch'])
+            ->middleware('idempotency');
         Route::post('/notifications', [NotificationController::class, 'store'])
             ->middleware('idempotency'); // Supports idempotency via X-Idempotency-Key header
         Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);

@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use OpenApi\Attributes as OA;
 
 /**
  * Metrics endpoint for monitoring system health and performance
@@ -17,7 +18,82 @@ class MetricsController
 {
     /**
      * Get comprehensive system metrics
+     *
+     * Returns notifications (last 24h, by status/channel/priority, success rate, scheduled pending),
+     * queue (RabbitMQ depth, priority breakdown, consumers), database, cache (Redis), rate_limiting (circuit breakers).
+     * Requires API key with read permission.
      */
+    #[OA\Get(path: '/api/v1/metrics', summary: 'Get system metrics', tags: ['Observability'])]
+    #[OA\Response(
+        response: 200,
+        description: 'System metrics (notifications, queue, database, cache, rate_limiting)',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'success', type: 'boolean', example: true),
+                new OA\Property(
+                    property: 'data',
+                    type: 'object',
+                    properties: [
+                        new OA\Property(property: 'timestamp', type: 'string', format: 'date-time'),
+                        new OA\Property(
+                            property: 'notifications',
+                            type: 'object',
+                            description: 'Last 24h: total, by_status, by_channel, by_priority, success_rate_percent; scheduled_pending'
+                        ),
+                        new OA\Property(
+                            property: 'queue',
+                            type: 'object',
+                            description: 'connection, queue_name, messages_ready, messages_unacknowledged, messages_total, consumers, priority_breakdown (high/normal/low), status'
+                        ),
+                        new OA\Property(
+                            property: 'database',
+                            type: 'object',
+                            description: 'status, connection, latency_ms, total_notifications'
+                        ),
+                        new OA\Property(
+                            property: 'cache',
+                            type: 'object',
+                            description: 'status, driver, latency_ms, redis_version, connected_clients, used_memory_human'
+                        ),
+                        new OA\Property(
+                            property: 'rate_limiting',
+                            type: 'object',
+                            description: 'circuit_breakers (sms/email/push: open|closed), active_rate_limit_keys'
+                        ),
+                    ]
+                ),
+            ],
+            example: [
+                'success' => true,
+                'data' => [
+                    'timestamp' => '2026-01-31T22:00:00.000000Z',
+                    'notifications' => [
+                        'last_24h' => [
+                            'total' => 150,
+                            'by_status' => ['sent' => 140, 'failed' => 8, 'queued' => 2],
+                            'by_channel' => ['email' => 100, 'sms' => 50],
+                            'by_priority' => ['high' => 10, 'normal' => 130, 'low' => 10],
+                            'success_rate_percent' => 94.59,
+                        ],
+                        'scheduled_pending' => 5,
+                    ],
+                    'queue' => [
+                        'connection' => 'rabbitmq',
+                        'queue_name' => 'notifications',
+                        'messages_ready' => 12,
+                        'messages_unacknowledged' => 0,
+                        'messages_total' => 12,
+                        'consumers' => 2,
+                        'priority_breakdown' => ['high' => 2, 'normal' => 8, 'low' => 2],
+                        'status' => 'healthy',
+                    ],
+                    'database' => ['status' => 'connected', 'connection' => 'mysql', 'latency_ms' => 1.2, 'total_notifications' => 5000],
+                    'cache' => ['status' => 'connected', 'driver' => 'redis', 'latency_ms' => 0.3, 'redis_version' => '7.0', 'connected_clients' => 3, 'used_memory_human' => '2.5M'],
+                    'rate_limiting' => ['circuit_breakers' => ['sms' => 'closed', 'email' => 'closed', 'push' => 'closed'], 'active_rate_limit_keys' => 0],
+                ],
+            ]
+        )
+    )]
     public function index(): JsonResponse
     {
         $metrics = [
