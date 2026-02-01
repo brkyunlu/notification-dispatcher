@@ -63,13 +63,14 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Prepare environment
-        run: |
-          cp .env.example .env
-          php artisan key:generate
+      - name: Copy environment file
+        run: cp .env.example .env
 
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Generate application key
+        run: php artisan key:generate
 
       - name: Create test database
         run: php -r "\$pdo = new PDO('mysql:host=127.0.0.1;port=3306', 'root', 'password'); \$pdo->exec('CREATE DATABASE IF NOT EXISTS notification_dispatcher_test');"
@@ -193,15 +194,17 @@ jobs:
           php-version: '8.3'
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo_mysql, bcmath
 
-      - name: Prepare env for Docker Compose smoke test
-        run: |
-          cp .env.example .env
-          php artisan key:generate
-          sed -i 's/^QUEUE_CONNECTION=.*/QUEUE_CONNECTION=sync/' .env
-          sed -i 's/^BROADCAST_CONNECTION=.*/BROADCAST_CONNECTION=log/' .env
+      - name: Copy environment file
+        run: cp .env.example .env
 
       - name: Install vendor (mounted by compose)
         run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Generate application key and set test env
+        run: |
+          php artisan key:generate
+          sed -i 's/^QUEUE_CONNECTION=.*/QUEUE_CONNECTION=sync/' .env
+          sed -i 's/^BROADCAST_CONNECTION=.*/BROADCAST_CONNECTION=log/' .env
 
       - name: Start MySQL and Redis
         run: docker compose up -d mysql redis
