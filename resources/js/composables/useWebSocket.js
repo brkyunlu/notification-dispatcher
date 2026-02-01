@@ -31,8 +31,8 @@ export function useWebSocket() {
                 broadcaster: 'reverb',
                 key: import.meta.env.VITE_REVERB_APP_KEY,
                 wsHost: import.meta.env.VITE_REVERB_HOST,
-                wsPort: import.meta.env.VITE_REVERB_PORT ?? 8080,
-                wssPort: import.meta.env.VITE_REVERB_PORT ?? 8080,
+                wsPort: parseInt(import.meta.env.VITE_REVERB_PORT ?? '8080'),
+                wssPort: parseInt(import.meta.env.VITE_REVERB_PORT ?? '8080'),
                 forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
                 enabledTransports: ['ws', 'wss'],
                 encrypted: false,
@@ -40,9 +40,13 @@ export function useWebSocket() {
             });
             
             // Enable Pusher logging for debugging
-            if (import.meta.env.DEV) {
-                Pusher.logToConsole = true;
-            }
+            Pusher.logToConsole = true;
+            console.log('[WebSocket] 🔧 Initializing with config:', {
+                key: import.meta.env.VITE_REVERB_APP_KEY,
+                wsHost: import.meta.env.VITE_REVERB_HOST,
+                wsPort: parseInt(import.meta.env.VITE_REVERB_PORT ?? '8080'),
+                scheme: import.meta.env.VITE_REVERB_SCHEME ?? 'http'
+            });
             
             // Connection event handlers
             echo.connector.pusher.connection.bind('connected', () => {

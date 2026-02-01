@@ -1,20 +1,11 @@
 <template>
     <div class="bg-white rounded-lg shadow-md p-6">
         <!-- Header -->
-        <div class="flex items-center justify-between mb-6">
+        <div class="mb-6">
             <h2 class="text-xl font-bold text-gray-900 flex items-center space-x-2">
                 <span>🔄</span>
                 <span>Queue Status</span>
             </h2>
-            
-            <!-- Refresh button -->
-            <button 
-                @click="refresh"
-                :disabled="isLoading"
-                class="px-3 py-1 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded-md transition-colors disabled:opacity-50"
-            >
-                {{ isLoading ? 'Refreshing...' : 'Refresh' }}
-            </button>
         </div>
         
         <!-- Error message -->

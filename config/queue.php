@@ -91,9 +91,10 @@ return [
                 ],
                 'queue' => [
                     'job' => \VladimirYuldashev\LaravelQueueRabbitMQ\Queue\Jobs\RabbitMQJob::class,
-                    'exchange' => env('RABBITMQ_EXCHANGE', 'notifications'),
+                    // Empty exchange = use RabbitMQ default exchange; queues are auto-declared on first push (notifications-sms, etc.)
+                    'exchange' => env('RABBITMQ_EXCHANGE', ''),
                     'exchange_type' => env('RABBITMQ_EXCHANGE_TYPE', 'direct'),
-                    'exchange_routing_key' => '',
+                    'exchange_routing_key' => '%s',
                     'prioritize_delayed' => false,
                     'queue_max_priority' => 255,
                     'reroute_failed' => true,
