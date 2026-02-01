@@ -1,0 +1,1375 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Call to an undefined static method App\\Modules\\Auth\\Models\\ApiKey\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Auth/Commands/GenerateApiKeyCommand.php
+
+		-
+			message: '#^Call to an undefined static method App\\Modules\\Auth\\Models\\ApiKey\:\:where\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Auth/Middleware/ApiKeyMiddleware.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Auth\\Models\\ApiKey\:\:\$expires_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Auth/Models/ApiKey.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Auth\\Models\\ApiKey\:\:\$is_active\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Auth/Models/ApiKey.php
+
+		-
+			message: '#^Method App\\Modules\\Auth\\Models\\ApiKey\:\:scopeActive\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Modules/Auth/Models/ApiKey.php
+
+		-
+			message: '#^Method App\\Modules\\Auth\\Models\\ApiKey\:\:scopeActive\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Modules/Auth/Models/ApiKey.php
+
+		-
+			message: '#^Method App\\Modules\\Auth\\Models\\ApiKey\:\:scopeValid\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Modules/Auth/Models/ApiKey.php
+
+		-
+			message: '#^Method App\\Modules\\Auth\\Models\\ApiKey\:\:scopeValid\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Modules/Auth/Models/ApiKey.php
+
+		-
+			message: '#^Property App\\Modules\\Auth\\Models\\ApiKey\:\:\$casts type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Auth/Models/ApiKey.php
+
+		-
+			message: '#^Method App\\Modules\\Delivery\\Contracts\\ProviderInterface\:\:send\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Delivery/Contracts/ProviderInterface.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$channel\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Modules/Delivery/Providers/WebhookProvider.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$content\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Delivery/Providers/WebhookProvider.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 4
+			path: app/Modules/Delivery/Providers/WebhookProvider.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$metadata\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Delivery/Providers/WebhookProvider.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$priority\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Delivery/Providers/WebhookProvider.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$recipient\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Delivery/Providers/WebhookProvider.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$subject\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Delivery/Providers/WebhookProvider.php
+
+		-
+			message: '#^Method App\\Modules\\Delivery\\Providers\\WebhookProvider\:\:send\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Delivery/Providers/WebhookProvider.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:del\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 3
+			path: app/Modules/Delivery/Services/CircuitBreakerService.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:expire\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 4
+			path: app/Modules/Delivery/Services/CircuitBreakerService.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:get\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 3
+			path: app/Modules/Delivery/Services/CircuitBreakerService.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:incr\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Delivery/Services/CircuitBreakerService.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:set\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 3
+			path: app/Modules/Delivery/Services/CircuitBreakerService.php
+
+		-
+			message: '#^Method App\\Modules\\Delivery\\Services\\CircuitBreakerService\:\:getStats\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Delivery/Services/CircuitBreakerService.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$channel\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Delivery/Services/DeliveryService.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 4
+			path: app/Modules/Delivery/Services/DeliveryService.php
+
+		-
+			message: '#^Method App\\Modules\\Delivery\\Services\\DeliveryService\:\:deliver\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Delivery/Services/DeliveryService.php
+
+		-
+			message: '#^Method App\\Modules\\Delivery\\Services\\DeliveryService\:\:getCircuitBreakerStats\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Delivery/Services/DeliveryService.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:exec\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Delivery/Services/RateLimiterService.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:expire\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Delivery/Services/RateLimiterService.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:get\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 2
+			path: app/Modules/Delivery/Services/RateLimiterService.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:incr\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Delivery/Services/RateLimiterService.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:multi\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Delivery/Services/RateLimiterService.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Controllers/NotificationController.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$attempts\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationFailed.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$batch_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationFailed.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$channel\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationFailed.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$content\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationFailed.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationFailed.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Modules/Notification/Events/NotificationFailed.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$last_error\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationFailed.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$priority\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationFailed.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$recipient\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationFailed.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationFailed.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$subject\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationFailed.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Events\\NotificationFailed\:\:broadcastWith\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Events/NotificationFailed.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$batch_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationQueued.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$channel\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationQueued.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$content\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationQueued.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationQueued.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Modules/Notification/Events/NotificationQueued.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$priority\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationQueued.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$recipient\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationQueued.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$scheduled_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationQueued.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationQueued.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$subject\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationQueued.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Events\\NotificationQueued\:\:broadcastWith\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Events/NotificationQueued.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$batch_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationSent.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$channel\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationSent.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$content\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationSent.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationSent.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$external_message_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationSent.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Modules/Notification/Events/NotificationSent.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$priority\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationSent.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$recipient\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationSent.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$sent_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationSent.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationSent.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$subject\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Events/NotificationSent.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Events\\NotificationSent\:\:broadcastWith\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Events/NotificationSent.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Exceptions\\NotificationException\:\:cannotCancel\(\) has parameter \$allowedStatuses with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Exceptions/NotificationException.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Exceptions\\NotificationException\:\:withDetails\(\) has parameter \$details with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Exceptions/NotificationException.php
+
+		-
+			message: '#^Property App\\Modules\\Notification\\Exceptions\\NotificationException\:\:\$details type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Exceptions/NotificationException.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$attempts\.$#'
+			identifier: property.notFound
+			count: 7
+			path: app/Modules/Notification/Jobs/ProcessNotificationJob.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$channel\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Modules/Notification/Jobs/ProcessNotificationJob.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 8
+			path: app/Modules/Notification/Jobs/ProcessNotificationJob.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$priority\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Modules/Notification/Jobs/ProcessNotificationJob.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Jobs/ProcessNotificationJob.php
+
+		-
+			message: '#^Parameter \#3 \$kind of method App\\Modules\\Observability\\Services\\TracingService\:\:startSpan\(\) expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Modules/Notification/Jobs/ProcessNotificationJob.php
+
+		-
+			message: '#^Property App\\Modules\\Notification\\Jobs\\ProcessNotificationJob\:\:\$backoff has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: app/Modules/Notification/Jobs/ProcessNotificationJob.php
+
+		-
+			message: '#^Property App\\Modules\\Notification\\Jobs\\ProcessNotificationJob\:\:\$tries has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: app/Modules/Notification/Jobs/ProcessNotificationJob.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$channel\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Jobs/ProcessScheduledNotificationsJob.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Modules/Notification/Jobs/ProcessScheduledNotificationsJob.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$priority\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Modules/Notification/Jobs/ProcessScheduledNotificationsJob.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$scheduled_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Jobs/ProcessScheduledNotificationsJob.php
+
+		-
+			message: '#^Call to an undefined static method App\\Modules\\Notification\\Models\\Notification\:\:scheduledReady\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Notification/Jobs/ProcessScheduledNotificationsJob.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:del\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Notification/Middleware/IdempotencyMiddleware.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:expire\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Notification/Middleware/IdempotencyMiddleware.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:get\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Notification/Middleware/IdempotencyMiddleware.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:setex\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Notification/Middleware/IdempotencyMiddleware.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:setnx\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Notification/Middleware/IdempotencyMiddleware.php
+
+		-
+			message: '#^Class App\\Modules\\Notification\\Models\\FailedNotification uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Modules/Notification/Models/FailedNotification.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Models\\FailedNotification\:\:notification\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Modules/Notification/Models/FailedNotification.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Models\\FailedNotification\:\:scopeByChannel\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Modules/Notification/Models/FailedNotification.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Models\\FailedNotification\:\:scopeByChannel\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Modules/Notification/Models/FailedNotification.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Models\\FailedNotification\:\:scopeRecent\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Modules/Notification/Models/FailedNotification.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Models\\FailedNotification\:\:scopeRecent\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Modules/Notification/Models/FailedNotification.php
+
+		-
+			message: '#^Property App\\Modules\\Notification\\Models\\FailedNotification\:\:\$casts type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Models/FailedNotification.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$attempts\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$channel\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$recipient\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Class App\\Modules\\Notification\\Models\\Notification uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: mixed$#'
+			identifier: match.unhandled
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Models\\Notification\:\:failures\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Models\\Notification\:\:scopeByBatch\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Models\\Notification\:\:scopeByBatch\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Models\\Notification\:\:scopeByChannel\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Models\\Notification\:\:scopeByChannel\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Models\\Notification\:\:scopePending\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Models\\Notification\:\:scopePending\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Models\\Notification\:\:scopeScheduledReady\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Models\\Notification\:\:scopeScheduledReady\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Models\\Notification\:\:template\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Property App\\Modules\\Notification\\Models\\Notification\:\:\$casts type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Models/Notification.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Requests\\StoreBatchNotificationRequest\:\:messages\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Requests/StoreBatchNotificationRequest.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Requests\\StoreBatchNotificationRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Requests/StoreBatchNotificationRequest.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Requests\\StoreNotificationRequest\:\:attributes\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Requests/StoreNotificationRequest.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Requests\\StoreNotificationRequest\:\:messages\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Requests/StoreNotificationRequest.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Requests\\StoreNotificationRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Requests/StoreNotificationRequest.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Pagination\\AbstractPaginator\:\:lastPage\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationCollection.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Pagination\\AbstractPaginator\:\:total\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationCollection.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Resources\\NotificationResource\:\:\$attempts\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Resources\\NotificationResource\:\:\$batch_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Resources\\NotificationResource\:\:\$channel\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Resources\\NotificationResource\:\:\$content\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Resources\\NotificationResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Resources\\NotificationResource\:\:\$external_message_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Resources\\NotificationResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Resources\\NotificationResource\:\:\$last_error\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Resources\\NotificationResource\:\:\$metadata\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Resources\\NotificationResource\:\:\$recipient\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Resources\\NotificationResource\:\:\$scheduled_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Resources\\NotificationResource\:\:\$sent_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Resources\\NotificationResource\:\:\$subject\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Resources\\NotificationResource\:\:\$template_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Resources\\NotificationResource\:\:\$updated_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Resources\\NotificationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Modules/Notification/Resources/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Services/NotificationService.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$priority\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Modules/Notification/Services/NotificationService.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$scheduled_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Services/NotificationService.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Notification/Services/NotificationService.php
+
+		-
+			message: '#^Call to an undefined static method App\\Modules\\Notification\\Models\\Notification\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 2
+			path: app/Modules/Notification/Services/NotificationService.php
+
+		-
+			message: '#^Call to an undefined static method App\\Modules\\Notification\\Models\\Notification\:\:find\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Notification/Services/NotificationService.php
+
+		-
+			message: '#^Call to an undefined static method App\\Modules\\Notification\\Models\\Notification\:\:where\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Notification/Services/NotificationService.php
+
+		-
+			message: '#^Call to an undefined static method App\\Modules\\Template\\Models\\Template\:\:find\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Notification/Services/NotificationService.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Services\\NotificationService\:\:applyTemplate\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Services/NotificationService.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Services\\NotificationService\:\:applyTemplate\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Services/NotificationService.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Services\\NotificationService\:\:create\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Services/NotificationService.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Services\\NotificationService\:\:createBatch\(\) has parameter \$notifications with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Services/NotificationService.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Services\\NotificationService\:\:createBatch\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Services/NotificationService.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Services\\NotificationService\:\:getStats\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Services/NotificationService.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Services\\NotificationService\:\:list\(\) has parameter \$filters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Notification/Services/NotificationService.php
+
+		-
+			message: '#^Method App\\Modules\\Notification\\Services\\NotificationService\:\:list\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Modules/Notification/Services/NotificationService.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Controllers\\HealthController\:\:checkCache\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Observability/Controllers/HealthController.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Controllers\\HealthController\:\:checkDatabase\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Observability/Controllers/HealthController.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Controllers\\HealthController\:\:checkQueue\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Observability/Controllers/HealthController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Redis\\Connections\\Connection\:\:get\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Modules/Observability/Controllers/MetricsController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Redis\\Connections\\Connection\:\:info\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Modules/Observability/Controllers/MetricsController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Redis\\Connections\\Connection\:\:keys\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Modules/Observability/Controllers/MetricsController.php
+
+		-
+			message: '#^Call to an undefined static method App\\Modules\\Notification\\Models\\Notification\:\:where\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 5
+			path: app/Modules/Observability/Controllers/MetricsController.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Controllers\\MetricsController\:\:getCacheMetrics\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Observability/Controllers/MetricsController.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Controllers\\MetricsController\:\:getDatabaseMetrics\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Observability/Controllers/MetricsController.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Controllers\\MetricsController\:\:getNotificationMetrics\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Observability/Controllers/MetricsController.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Controllers\\MetricsController\:\:getQueueMetrics\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Observability/Controllers/MetricsController.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Controllers\\MetricsController\:\:getRabbitMQStats\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Observability/Controllers/MetricsController.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Controllers\\MetricsController\:\:getRateLimitMetrics\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Observability/Controllers/MetricsController.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Exceptions\\ObservabilityException\:\:withDetails\(\) has parameter \$details with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Observability/Exceptions/ObservabilityException.php
+
+		-
+			message: '#^Property App\\Modules\\Observability\\Exceptions\\ObservabilityException\:\:\$details type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Observability/Exceptions/ObservabilityException.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:exec\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Observability/Middleware/ApiRateLimitMiddleware.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:expire\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Observability/Middleware/ApiRateLimitMiddleware.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:get\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Observability/Middleware/ApiRateLimitMiddleware.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:incr\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Observability/Middleware/ApiRateLimitMiddleware.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Redis\:\:multi\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Observability/Middleware/ApiRateLimitMiddleware.php
+
+		-
+			message: '#^Parameter \#2 \$values of method Symfony\\Component\\HttpFoundation\\ResponseHeaderBag\:\:set\(\) expects array\<string\>\|string\|null, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Modules/Observability/Middleware/ApiRateLimitMiddleware.php
+
+		-
+			message: '#^Parameter \#2 \$values of method Symfony\\Component\\HttpFoundation\\ResponseHeaderBag\:\:set\(\) expects array\<string\>\|string\|null, int\<0, 999\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Modules/Observability/Middleware/ApiRateLimitMiddleware.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Middleware\\TracingMiddleware\:\:extractContext\(\) should return OpenTelemetry\\Context\\Context but returns OpenTelemetry\\Context\\ContextInterface\.$#'
+			identifier: return.type
+			count: 2
+			path: app/Modules/Observability/Middleware/TracingMiddleware.php
+
+		-
+			message: '#^Default value of the parameter \#3 \$kind \(int\) of method App\\Modules\\Observability\\Services\\TracingService\:\:startSpan\(\) is incompatible with type string\.$#'
+			identifier: parameter.defaultValue
+			count: 1
+			path: app/Modules/Observability/Services/TracingService.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Services\\TracingService\:\:addAttribute\(\) has parameter \$span with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Modules/Observability/Services/TracingService.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Services\\TracingService\:\:addAttribute\(\) has parameter \$value with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Modules/Observability/Services/TracingService.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Services\\TracingService\:\:endSpan\(\) has parameter \$scope with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Modules/Observability/Services/TracingService.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Services\\TracingService\:\:endSpan\(\) has parameter \$span with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Modules/Observability/Services/TracingService.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Services\\TracingService\:\:recordException\(\) has parameter \$span with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Modules/Observability/Services/TracingService.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Services\\TracingService\:\:startSpan\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Observability/Services/TracingService.php
+
+		-
+			message: '#^Method App\\Modules\\Observability\\Services\\TracingService\:\:startSpan\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Observability/Services/TracingService.php
+
+		-
+			message: '#^Parameter \#1 \$spanKind of method OpenTelemetry\\API\\Trace\\SpanBuilderInterface\:\:setSpanKind\(\) expects 0\|1\|2\|3\|4, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Modules/Observability/Services/TracingService.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Template\\Models\\Template\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Template/Controllers/TemplateController.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Template\\Models\\Template\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Template/Controllers/TemplateController.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Template\\Models\\Template\:\:\$variables\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Template/Controllers/TemplateController.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Template\\Models\\Template\:\:\$content\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Modules/Template/Models/Template.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Template\\Models\\Template\:\:\$subject\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Modules/Template/Models/Template.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Models\\Template\:\:extractVariables\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Template/Models/Template.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Models\\Template\:\:notifications\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Modules/Template/Models/Template.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Models\\Template\:\:render\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Template/Models/Template.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Models\\Template\:\:render\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Template/Models/Template.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Models\\Template\:\:scopeActive\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Modules/Template/Models/Template.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Models\\Template\:\:scopeActive\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Modules/Template/Models/Template.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Models\\Template\:\:scopeForChannel\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: app/Modules/Template/Models/Template.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Models\\Template\:\:scopeForChannel\(\) has parameter \$query with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: app/Modules/Template/Models/Template.php
+
+		-
+			message: '#^Offset 1 on array\{list\<string\>, list\<non\-empty\-string\>\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 2
+			path: app/Modules/Template/Models/Template.php
+
+		-
+			message: '#^Property App\\Modules\\Template\\Models\\Template\:\:\$casts type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Template/Models/Template.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Requests\\StoreTemplateRequest\:\:messages\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Template/Requests/StoreTemplateRequest.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Requests\\StoreTemplateRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Template/Requests/StoreTemplateRequest.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Template\\Resources\\TemplateResource\:\:\$channel\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Template/Resources/TemplateResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Template\\Resources\\TemplateResource\:\:\$content\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Template/Resources/TemplateResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Template\\Resources\\TemplateResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Template/Resources/TemplateResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Template\\Resources\\TemplateResource\:\:\$description\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Template/Resources/TemplateResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Template\\Resources\\TemplateResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Template/Resources/TemplateResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Template\\Resources\\TemplateResource\:\:\$is_active\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Template/Resources/TemplateResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Template\\Resources\\TemplateResource\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Template/Resources/TemplateResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Template\\Resources\\TemplateResource\:\:\$slug\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Template/Resources/TemplateResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Template\\Resources\\TemplateResource\:\:\$subject\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Template/Resources/TemplateResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Template\\Resources\\TemplateResource\:\:\$updated_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Template/Resources/TemplateResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Modules\\Template\\Resources\\TemplateResource\:\:\$variables\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Modules/Template/Resources/TemplateResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Modules\\Template\\Resources\\TemplateResource\:\:notifications\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Modules/Template/Resources/TemplateResource.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Resources\\TemplateResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Template/Resources/TemplateResource.php
+
+		-
+			message: '#^Parameter \#1 \$condition of method Illuminate\\Http\\Resources\\Json\\JsonResource\:\:when\(\) expects bool, array\|string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Modules/Template/Resources/TemplateResource.php
+
+		-
+			message: '#^Call to an undefined static method App\\Modules\\Template\\Models\\Template\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Template/Services/TemplateService.php
+
+		-
+			message: '#^Call to an undefined static method App\\Modules\\Template\\Models\\Template\:\:find\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Template/Services/TemplateService.php
+
+		-
+			message: '#^Call to an undefined static method App\\Modules\\Template\\Models\\Template\:\:where\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Modules/Template/Services/TemplateService.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Services\\TemplateService\:\:create\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Template/Services/TemplateService.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Services\\TemplateService\:\:list\(\) has parameter \$filters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Template/Services/TemplateService.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Services\\TemplateService\:\:list\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Modules/Template/Services/TemplateService.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Services\\TemplateService\:\:render\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Template/Services/TemplateService.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Services\\TemplateService\:\:render\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Template/Services/TemplateService.php
+
+		-
+			message: '#^Method App\\Modules\\Template\\Services\\TemplateService\:\:update\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Modules/Template/Services/TemplateService.php
+
+		-
+			message: '#^Method App\\Shared\\Enums\\Channel\:\:values\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Shared/Enums/Channel.php
+
+		-
+			message: '#^Method App\\Shared\\Enums\\Priority\:\:values\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Shared/Enums/Priority.php
+
+		-
+			message: '#^Method App\\Shared\\Enums\\Status\:\:values\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Shared/Enums/Status.php
