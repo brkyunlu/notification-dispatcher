@@ -26,3 +26,4 @@ yarn-error.log
 database/database.sqlite
 .phpunit.cache/
 .editorconfig
+.initialized

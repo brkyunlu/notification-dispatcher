@@ -183,7 +183,6 @@ const metrics = reactive({
         email: 0,
         sms: 0,
         push: 0,
-        webhook: 0,
     },
 });
 
@@ -258,7 +257,6 @@ const getChannelIcon = (channel) => {
         email: '📧',
         sms: '📱',
         push: '🔔',
-        webhook: '🔗',
     };
     return icons[channel] || '📊';
 };
@@ -269,7 +267,6 @@ const getChannelBgColor = (channel) => {
         email: 'bg-purple-100',
         sms: 'bg-green-100',
         push: 'bg-blue-100',
-        webhook: 'bg-orange-100',
     };
     return colors[channel] || 'bg-gray-100';
 };

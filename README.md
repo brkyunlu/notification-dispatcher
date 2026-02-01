@@ -35,33 +35,91 @@ Event-driven notification system built with Laravel 11. Supports SMS, Email, and
 ## Quick Start
 
 ```bash
-# Clone and setup
+# Clone and start (everything is auto-configured!)
 git clone <repo-url>
 cd notification-dispatcher
-cp .env.example .env
-
-# Start all services
 docker-compose up -d
-
-# Install dependencies and setup
-docker-compose exec app composer install
-docker-compose exec app php artisan key:generate
-docker-compose exec app php artisan migrate
-
-# Generate API key
-docker-compose exec app php artisan api:generate-key --name="Dev" --permissions=read,write
 ```
 
-API available at `http://localhost:8000/api/v1`
+When you run `docker-compose up -d`, the following happens automatically:
+- Creates `.env` from `.env.example`
+- Installs dependencies (composer, npm)
+- Runs database migrations and seeds demo data (templates & notifications)
+- Generates API key for the dashboard
+- Gets a unique webhook URL from webhook.site and writes it to `.env`
+- Builds frontend assets
 
-## Configuration
+**That's it!** Wait for init to complete (check logs with `docker-compose logs init`), then:
+
+| Service | URL |
+|---------|-----|
+| API | http://localhost:8000/api/v1 |
+| Dashboard | http://localhost:8000/dashboard |
+| RabbitMQ | http://localhost:15672 (username:notification pass:secret) |
+| Jaeger | http://localhost:16686 |
+
+### Using the generated `.env`
+
+Init writes two values into `.env` that you can use elsewhere:
+
+- **`NOTIFICATION_WEBHOOK_URL`** — Outgoing notifications are posted to this URL (e.g. `https://webhook.site/your-unique-uuid`). To inspect requests: open the same URL in your browser, or go to `https://webhook.site/#!/view/your-unique-uuid` (use the UUID from the URL in `.env`). Init logs also print the "View requests" link.
+
+- **`VITE_API_KEY`** — This is the API key for the dashboard and for API calls. In Postman: import the [Notification Dispatcher API (Minimal) collection](Notification_Dispatcher_API_Minimal.postman_collection.json), then set the collection variable **`api_key`** to the value of `VITE_API_KEY` from your `.env`. All requests in the collection use `Authorization: Bearer {{api_key}}`.
+
+To see the API key again in init logs:
+```bash
+docker-compose logs init | grep "API Key"
+```
+
+## Manual Configuration (Optional)
+
+If you prefer manual setup or need to change values:
+
+### If .env creation or update fails
+
+If init did not create or update `.env` correctly (e.g. missing `NOTIFICATION_WEBHOOK_URL` or `VITE_API_KEY`), create or edit `.env` manually: copy from `.env.example`, then set the values you need (see Webhook Provider and API Key below).
+
+### Making Docker see .env changes
+
+Containers load `.env` when they start. Laravel can also cache config and application cache; if you change `.env` and still see old values, do the following.
+
+1. **Clear Laravel caches** (so the app stops using cached config/values):
+
+```bash
+docker-compose exec app php artisan config:clear
+docker-compose exec app php artisan cache:clear
+```
+
+2. **Restart the services** that use `.env` so they load it again:
+
+```bash
+docker-compose restart app queue-worker scheduler
+```
+
+After this, the PHP app, queue workers, and scheduler will use the updated `.env` and no longer serve stale cached values.
+
+> **⚠️ Important:** If you change `VITE_*` variables (like `VITE_API_KEY`, `VITE_REVERB_*`), you must also rebuild the frontend since these values are embedded at build time:
+> ```bash
+> docker-compose exec app npm run build
+> ```
+> Then hard refresh your browser (Cmd+Shift+R / Ctrl+Shift+R).
 
 ### Webhook Provider
 
-1. Go to https://webhook.site and copy your unique UUID
-2. Set in `.env`:
-```env
-WEBHOOK_URL=https://webhook.site/your-uuid-here
+Auto-configured, but you can use your own:
+```bash
+# Get your own webhook URL
+curl -s -X POST https://webhook.site/token | jq -r '.uuid'
+
+# Update .env
+NOTIFICATION_WEBHOOK_URL=https://webhook.site/<your-uuid>
+```
+
+### API Key
+
+Auto-generated, but you can create additional keys:
+```bash
+docker-compose exec app php artisan api:generate-key "MyApp" --permissions=read,write
 ```
 
 ### Environment Variables
@@ -76,10 +134,8 @@ DB_DATABASE=notification_dispatcher
 QUEUE_CONNECTION=rabbitmq
 RABBITMQ_HOST=rabbitmq
 
-# Rate Limits (per minute)
-RATE_LIMIT_EMAIL=50
-RATE_LIMIT_SMS=20
-RATE_LIMIT_PUSH=100
+# Rate Limits
+RATE_LIMIT_RPS=100  # requests per second per channel
 ```
 
 ## API Usage
