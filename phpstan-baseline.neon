@@ -483,7 +483,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property App\\Modules\\Notification\\Models\\Notification\:\:\$channel\.$#'
 			identifier: property.notFound
-			count: 1
+			count: 2
 			path: app/Modules/Notification/Jobs/ProcessScheduledNotificationsJob.php
 
 		-
@@ -991,7 +991,7 @@ parameters:
 			path: app/Modules/Observability/Controllers/MetricsController.php
 
 		-
-			message: '#^Method App\\Modules\\Observability\\Controllers\\MetricsController\:\:getRabbitMQStats\(\) return type has no value type specified in iterable type array\.$#'
+			message: '#^Method App\\Modules\\Observability\\Controllers\\MetricsController\:\:getRabbitMQQueueStats\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: app/Modules/Observability/Controllers/MetricsController.php
