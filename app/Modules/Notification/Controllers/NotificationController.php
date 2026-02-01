@@ -209,6 +209,10 @@ class NotificationController extends Controller
     #[OA\Response(response: 404, description: 'Notification not found')]
     public function show(string $id): JsonResponse
     {
+        if (trim($id) === '' || !Str::isUuid($id)) {
+            throw NotificationException::notFound($id);
+        }
+
         $notification = $this->notificationService->find($id);
 
         if (!$notification) {
@@ -231,6 +235,10 @@ class NotificationController extends Controller
     #[OA\Response(response: 422, description: 'Cannot cancel in current status')]
     public function destroy(string $id): JsonResponse
     {
+        if (trim($id) === '' || !Str::isUuid($id)) {
+            throw NotificationException::notFound($id);
+        }
+
         $notification = $this->notificationService->find($id);
 
         if (!$notification) {

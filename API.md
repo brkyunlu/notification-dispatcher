@@ -40,7 +40,7 @@ X-Idempotency-Key: optional-unique-key
 ### 2. Create Batch Notifications
 
 ```http
-POST /notifications
+POST /notifications/batch
 Content-Type: application/json
 
 {
@@ -65,10 +65,23 @@ Content-Type: application/json
 **Response (201):**
 ```json
 {
+  "success": true,
   "message": "Batch notifications created successfully",
-  "batch_id": "uuid",
-  "count": 2,
-  "data": [...]
+  "data": {
+    "batch_id": "uuid",
+    "count": 2,
+    "notifications": [
+      {
+        "id": "uuid",
+        "batch_id": "uuid",
+        "recipient": "user1@example.com",
+        "channel": "email",
+        "content": "Email content here",
+        "status": "queued",
+        ...
+      }
+    ]
+  }
 }
 ```
 
@@ -216,6 +229,13 @@ GET /notifications/stats?batch_id=optional-batch-id
 ### Batch Notifications
 - `notifications` - required, array (min: 1, max: 1000)
 - Each item follows single notification rules
+
+### Template Update (PUT /templates/{id})
+- **Full body required.** Partial update is not supported.
+- `channel` - required
+- `content` - required
+- Other fields (name, subject, slug, description, is_active) - optional
+- Sending only some fields (e.g. only `name`) returns 422 until `channel` and `content` are provided.
 
 ## Error Responses
 

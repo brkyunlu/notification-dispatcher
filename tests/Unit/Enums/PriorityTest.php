@@ -6,7 +6,7 @@ use App\Shared\Enums\Priority;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Unit tests for Priority enum (cases, values, getQueueName, getWorkerCount).
+ * Unit tests for Priority enum (cases, values).
  */
 class PriorityTest extends TestCase
 {
@@ -33,21 +33,5 @@ class PriorityTest extends TestCase
     {
         $values = Priority::values();
         $this->assertEqualsCanonicalizing(['low', 'normal', 'high'], $values);
-    }
-
-    /** @test */
-    public function it_returns_queue_name_per_priority()
-    {
-        $this->assertEquals('notifications-high', Priority::HIGH->getQueueName());
-        $this->assertEquals('notifications-normal', Priority::NORMAL->getQueueName());
-        $this->assertEquals('notifications-low', Priority::LOW->getQueueName());
-    }
-
-    /** @test */
-    public function it_returns_worker_count_per_priority()
-    {
-        $this->assertEquals(4, Priority::HIGH->getWorkerCount());
-        $this->assertEquals(2, Priority::NORMAL->getWorkerCount());
-        $this->assertEquals(1, Priority::LOW->getWorkerCount());
     }
 }

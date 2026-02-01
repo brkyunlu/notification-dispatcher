@@ -5,6 +5,7 @@ namespace Tests\Feature\Jobs;
 use App\Modules\Notification\Jobs\ProcessNotificationJob;
 use App\Modules\Notification\Jobs\ProcessScheduledNotificationsJob;
 use App\Modules\Notification\Models\Notification;
+use App\Shared\Enums\Channel;
 use App\Shared\Enums\Priority;
 use App\Shared\Enums\Status;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -268,17 +269,24 @@ class ProcessScheduledNotificationsJobTest extends TestCase
     }
 
     /** @test */
-    public function it_dispatches_to_correct_queue_and_connection()
+    public function it_dispatches_to_correct_queue_based_on_channel()
     {
         Queue::fake();
 
         Notification::factory()->pending()->create([
             'scheduled_at' => now()->subMinute(),
+            'channel' => Channel::EMAIL,
+        ]);
+
+        Notification::factory()->pending()->create([
+            'scheduled_at' => now()->subMinute(),
+            'channel' => Channel::SMS,
         ]);
 
         $job = new ProcessScheduledNotificationsJob();
         $job->handle();
 
-        Queue::assertPushedOn('notifications', ProcessNotificationJob::class);
+        Queue::assertPushedOn('notifications-email', ProcessNotificationJob::class);
+        Queue::assertPushedOn('notifications-sms', ProcessNotificationJob::class);
     }
 }

@@ -1,0 +1,489 @@
+{
+	"info": {
+		"_postman_id": "notification-dispatcher-api-minimal",
+		"name": "Notification Dispatcher API (Minimal)",
+		"description": "Sadece gerekli endpoint'ler. Base URL: http://localhost:8000. Variables: api_key (zorunlu), notification_id, batch_id, template_id (otomatik set edilir).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{api_key}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "Statistics",
+			"item": [
+				{
+					"name": "Get All Statistics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/notifications/stats",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "notifications", "stats"]
+						},
+						"description": "Get notification statistics (total, by status, by channel, by priority)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Batch Statistics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/notifications/stats?batch_id={{batch_id}}",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "notifications", "stats"],
+							"query": [{"key": "batch_id", "value": "{{batch_id}}"}]
+						},
+						"description": "Get statistics for a specific batch"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "List Notifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/notifications?per_page=20",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "notifications"],
+							"query": [
+								{"key": "per_page", "value": "20"},
+								{"key": "status", "value": "", "disabled": true},
+								{"key": "channel", "value": "", "disabled": true},
+								{"key": "priority", "value": "", "disabled": true}
+							]
+						},
+						"description": "List notifications with pagination and filters"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notification by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/notifications/{{notification_id}}",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "notifications", "{{notification_id}}"]
+						},
+						"description": "Get single notification. notification_id is set by Create Single."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Single Notification",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    var r = pm.response.json();",
+									"    pm.collectionVariables.set('notification_id', r.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"recipient\": \"+905551234567\",\n  \"channel\": \"sms\",\n  \"content\": \"Test notification\",\n  \"priority\": \"high\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "notifications"]
+						},
+						"description": "Create a single notification. Optional: X-Idempotency-Key header."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Batch Notifications",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    var r = pm.response.json();",
+									"    pm.collectionVariables.set('batch_id', r.data.batch_id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notifications\": [\n    {\n      \"recipient\": \"user1@example.com\",\n      \"channel\": \"email\",\n      \"subject\": \"Batch 1\",\n      \"content\": \"First notification\",\n      \"priority\": \"normal\"\n    },\n    {\n      \"recipient\": \"+905551111111\",\n      \"channel\": \"sms\",\n      \"content\": \"Second notification\",\n      \"priority\": \"high\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/notifications/batch",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "notifications", "batch"]
+						},
+						"description": "Create multiple notifications. Response: data.batch_id, data.count, data.notifications"
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Notification",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/notifications/{{notification_id}}",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "notifications", "{{notification_id}}"]
+						},
+						"description": "Cancel a queued or pending notification"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Validation Tests",
+			"item": [
+				{
+					"name": "Missing Recipient (Single)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"body": {"mode": "raw", "raw": "{\n  \"channel\": \"email\",\n  \"content\": \"Test content\"\n}"},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "notifications"]
+						},
+						"description": "Expect 422 - recipient required"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Channel",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"body": {"mode": "raw", "raw": "{\n  \"recipient\": \"test@example.com\",\n  \"channel\": \"invalid_channel\",\n  \"content\": \"Test\"\n}"},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "notifications"]
+						},
+						"description": "Expect 422 - channel must be sms, email, push"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Priority",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"body": {"mode": "raw", "raw": "{\n  \"recipient\": \"test@example.com\",\n  \"channel\": \"email\",\n  \"content\": \"Test\",\n  \"priority\": \"urgent\"\n}"},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "notifications"]
+						},
+						"description": "Expect 422 - priority must be low, normal, high"
+					},
+					"response": []
+				},
+				{
+					"name": "Missing Content (Batch)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"body": {"mode": "raw", "raw": "{\n  \"notifications\": [\n    {\n      \"recipient\": \"test@example.com\",\n      \"channel\": \"email\"\n    }\n  ]\n}"},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/notifications/batch",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "notifications", "batch"]
+						},
+						"description": "Expect 422 - content required in batch item"
+					},
+					"response": []
+				},
+				{
+					"name": "Batch Size Limit (1000+)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"body": {"mode": "raw", "raw": "{\n  \"notifications\": []\n}"},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/notifications/batch",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "notifications", "batch"]
+						},
+						"description": "Expect 422 - min 1 item, max 1000"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Templates",
+			"item": [
+				{
+					"name": "List Templates",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/templates?per_page=20",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "templates"],
+							"query": [{"key": "per_page", "value": "20"}]
+						},
+						"description": "List all templates"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Template",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    var r = pm.response.json();",
+									"    pm.collectionVariables.set('template_id', r.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Welcome Email\",\n  \"channel\": \"email\",\n  \"subject\": \"Welcome {{user_name}}!\",\n  \"content\": \"Hello {{user_name}}, welcome. Account: {{account_id}}\",\n  \"description\": \"Welcome email\",\n  \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/templates",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "templates"]
+						},
+						"description": "Create template. template_id is set automatically."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Template",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/templates/{{template_id}}",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "templates", "{{template_id}}"]
+						},
+						"description": "Get template by ID (set by Create Template)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Template",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Welcome Email Updated\",\n  \"channel\": \"email\",\n  \"subject\": \"Welcome {{user_name}}! v2\",\n  \"content\": \"Hi {{user_name}}, your account {{account_id}} is ready.\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/templates/{{template_id}}",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "templates", "{{template_id}}"]
+						},
+						"description": "Update template. Full body required: channel, content."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Notification With Template",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"recipient\": \"user@example.com\",\n  \"channel\": \"email\",\n  \"template_id\": \"{{template_id}}\",\n  \"variables\": {\n    \"user_name\": \"Berkay\",\n    \"account_id\": \"ACC-123\"\n  },\n  \"priority\": \"high\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/notifications",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "notifications"]
+						},
+						"description": "Create notification using template_id. template_id from Create Template."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Template",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{api_key}}"}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/templates/{{template_id}}",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8000",
+							"path": ["api", "v1", "templates", "{{template_id}}"]
+						},
+						"description": "Delete template. Fails if template is in use."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "api_key",
+			"value": "ndk_IxfiZCs6J4ZOSyqGpwTzA00gbBAautX1j4b1F2WZhVsJjFV9",
+			"type": "string"
+		},
+		{
+			"key": "notification_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "batch_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "template_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

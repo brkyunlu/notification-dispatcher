@@ -75,9 +75,12 @@ class ProcessScheduledNotificationsJob implements ShouldQueue
             // Map priority to RabbitMQ priority value (same logic as NotificationService)
             $rabbitmqPriority = $this->mapPriorityToRabbitMQ($notification->priority);
             
-            // Dispatch to RabbitMQ queue
+            // Get channel-specific queue name
+            $queueName = $notification->channel->getQueueName();
+            
+            // Dispatch to RabbitMQ channel-specific queue
             ProcessNotificationJob::dispatch($notification, $rabbitmqPriority)
-                ->onQueue('notifications')
+                ->onQueue($queueName)
                 ->onConnection('rabbitmq');
             
             // Mark as queued
@@ -86,6 +89,7 @@ class ProcessScheduledNotificationsJob implements ShouldQueue
             Log::debug('Scheduled notification dispatched', [
                 'notification_id' => $notification->id,
                 'channel' => $notification->channel->value,
+                'queue' => $queueName,
                 'priority' => $notification->priority->value,
                 'scheduled_at' => $notification->scheduled_at->toIso8601String(),
             ]);
