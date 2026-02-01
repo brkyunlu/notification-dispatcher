@@ -1,0 +1,14 @@
+# PHPStan configuration for CI
+# Analyses app/Modules and app/Shared only. Level 6 = strict typing, no mixed.
+# Baseline ignores current errors; new code is still checked.
+
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 6
+    paths:
+        - app/Modules
+        - app/Shared
+    excludePaths:
+        - app/Modules/*/Providers/*ServiceProvider.php

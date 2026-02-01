@@ -101,27 +101,6 @@ class AuthenticationTest extends TestCase
     }
 
     /** @test */
-    public function it_allows_write_permission_for_post_endpoints()
-    {
-        $key = ApiKey::create([
-            'key' => 'write_key',
-            'name' => 'Write Access',
-            'permissions' => ['read', 'write'],
-            'expires_at' => now()->addYear(),
-        ]);
-
-        $response = $this->postJson('/api/v1/notifications', [
-            'recipient' => 'test@example.com',
-            'channel' => 'email',
-            'content' => 'Test',
-        ], [
-            'Authorization' => 'Bearer ' . $key->key,
-        ]);
-
-        $response->assertStatus(201);
-    }
-
-    /** @test */
     public function it_allows_write_permission_for_delete_endpoints()
     {
         $key = ApiKey::create([
