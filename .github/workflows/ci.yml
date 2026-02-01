@@ -17,30 +17,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: notification_dispatcher
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-
-      redis:
-        image: redis:7-alpine
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd="redis-cli ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -72,42 +48,8 @@ jobs:
       - name: Generate application key
         run: php artisan key:generate
 
-      - name: Create test database
-        run: php -r "\$pdo = new PDO('mysql:host=127.0.0.1;port=3306', 'root', 'password'); \$pdo->exec('CREATE DATABASE IF NOT EXISTS notification_dispatcher_test');"
-
-      - name: Run migrations (test database only)
-        run: php artisan migrate --force
-        env:
-          APP_ENV: testing
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: notification_dispatcher_test
-          DB_USERNAME: root
-          DB_PASSWORD: password
-          REDIS_HOST: 127.0.0.1
-          REDIS_PORT: 6379
-          CACHE_STORE: redis
-          QUEUE_CONNECTION: sync
-          BROADCAST_CONNECTION: log
-          SESSION_DRIVER: array
-
       - name: Run tests with coverage
         run: php artisan test --coverage --min=80
-        env:
-          APP_ENV: testing
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: notification_dispatcher_test
-          DB_USERNAME: root
-          DB_PASSWORD: password
-          REDIS_HOST: 127.0.0.1
-          REDIS_PORT: 6379
-          CACHE_STORE: redis
-          QUEUE_CONNECTION: sync
-          BROADCAST_CONNECTION: log
-          SESSION_DRIVER: array
 
   phpstan:
     runs-on: ubuntu-latest
