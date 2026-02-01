@@ -69,7 +69,7 @@ class NotificationService
                 'notification_id' => $notification->id,
                 'channel' => $notification->channel->value,
                 'priority' => $notification->priority->value,
-                'queue' => $notification->priority->getQueueName(),
+                'queue' => $notification->channel->getQueueName(),
             ]);
             
             return $notification;
@@ -142,15 +142,20 @@ class NotificationService
         // RabbitMQ native priority (0-255, higher = more priority)
         $rabbitmqPriority = $this->mapPriorityToRabbitMQ($notification->priority);
         
-        // Dispatch with RabbitMQ priority
+        // Get channel-specific queue name
+        $queueName = $notification->channel->getQueueName();
+        
+        // Dispatch with RabbitMQ priority to channel-specific queue
         ProcessNotificationJob::dispatch($notification, $rabbitmqPriority)
-            ->onQueue('notifications')
+            ->onQueue($queueName)
             ->onConnection('rabbitmq');
             
         $notification->markAsQueued();
         
         Log::debug('Notification dispatched to RabbitMQ', [
             'notification_id' => $notification->id,
+            'channel' => $notification->channel->value,
+            'queue' => $queueName,
             'priority' => $notification->priority->value,
             'rabbitmq_priority' => $rabbitmqPriority,
         ]);

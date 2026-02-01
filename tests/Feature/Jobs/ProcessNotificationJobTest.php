@@ -10,6 +10,7 @@ use App\Modules\Delivery\Services\RateLimiterService;
 use App\Modules\Notification\Jobs\ProcessNotificationJob;
 use App\Modules\Notification\Models\FailedNotification;
 use App\Modules\Notification\Models\Notification;
+use App\Shared\Enums\Channel;
 use App\Shared\Enums\Priority;
 use App\Shared\Enums\Status;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -37,17 +38,29 @@ class ProcessNotificationJobTest extends TestCase
     }
 
     /** @test */
-    public function it_dispatches_to_correct_queue()
+    public function it_dispatches_to_correct_queue_based_on_channel()
     {
         Queue::fake();
         
-        $notification = Notification::factory()->create();
+        $smsNotification = Notification::factory()->create(['channel' => Channel::SMS]);
+        $emailNotification = Notification::factory()->create(['channel' => Channel::EMAIL]);
+        $pushNotification = Notification::factory()->create(['channel' => Channel::PUSH]);
 
-        ProcessNotificationJob::dispatch($notification)
-            ->onQueue('notifications')
+        ProcessNotificationJob::dispatch($smsNotification)
+            ->onQueue('notifications-sms')
+            ->onConnection('rabbitmq');
+            
+        ProcessNotificationJob::dispatch($emailNotification)
+            ->onQueue('notifications-email')
+            ->onConnection('rabbitmq');
+            
+        ProcessNotificationJob::dispatch($pushNotification)
+            ->onQueue('notifications-push')
             ->onConnection('rabbitmq');
 
-        Queue::assertPushedOn('notifications', ProcessNotificationJob::class);
+        Queue::assertPushedOn('notifications-sms', ProcessNotificationJob::class);
+        Queue::assertPushedOn('notifications-email', ProcessNotificationJob::class);
+        Queue::assertPushedOn('notifications-push', ProcessNotificationJob::class);
     }
 
     /** @test */

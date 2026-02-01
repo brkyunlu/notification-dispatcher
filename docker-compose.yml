@@ -90,13 +90,22 @@ services:
     working_dir: /var/www
     volumes:
       - ./:/var/www
-    command: php artisan queue:work rabbitmq --queue=notifications --tries=5 --timeout=90 --sleep=1
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_DATABASE:-notification_dispatcher}
+      - DB_USERNAME=${DB_USERNAME:-dispatcher_user}
+      - DB_PASSWORD=${DB_PASSWORD:-secret}
+    command: php artisan queue:work rabbitmq --queue=notifications,notifications-sms,notifications-email,notifications-push --tries=5 --timeout=90 --sleep=1
     networks:
       - dispatcher-network
     depends_on:
       rabbitmq:
         condition: service_healthy
       app:
+        condition: service_started
+      mysql:
         condition: service_started
 
   scheduler:

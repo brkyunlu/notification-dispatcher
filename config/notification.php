@@ -82,22 +82,23 @@ return [
     | Queue Configuration
     |--------------------------------------------------------------------------
     |
-    | Queue names and worker counts per priority
+    | Channel-based queue names and recommended worker counts.
+    | Each channel has its own queue, priority is handled via RabbitMQ native priority (0-255).
     |
     */
 
     'queues' => [
-        'high' => [
-            'name' => 'notifications-high',
-            'workers' => 4,
-        ],
-        'normal' => [
-            'name' => 'notifications-normal',
+        'sms' => [
+            'name' => 'notifications-sms',
             'workers' => 2,
         ],
-        'low' => [
-            'name' => 'notifications-low',
-            'workers' => 1,
+        'email' => [
+            'name' => 'notifications-email',
+            'workers' => 4,
+        ],
+        'push' => [
+            'name' => 'notifications-push',
+            'workers' => 3,
         ],
     ],
 

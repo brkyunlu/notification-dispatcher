@@ -15,4 +15,12 @@ enum Channel: string
     {
         return array_column(self::cases(), 'value');
     }
+
+    /**
+     * Get queue name for this channel
+     */
+    public function getQueueName(): string
+    {
+        return 'notifications-' . $this->value;
+    }
 }

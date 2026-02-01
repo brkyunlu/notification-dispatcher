@@ -168,36 +168,56 @@ class MetricsController
     private function getQueueMetrics(): array
     {
         try {
+            $channels = ['sms', 'email', 'push'];
+            $byChannel = [];
+            $totalMessages = 0;
+            $totalUnacked = 0;
+            $totalConsumers = 0;
+
+            foreach ($channels as $channel) {
+                $queueName = "notifications-{$channel}";
+                $stats = $this->getRabbitMQQueueStats($queueName);
+                
+                $messagesReady = $stats['messages_ready'] ?? 0;
+                $unacked = $stats['messages_unacknowledged'] ?? 0;
+                $consumers = $stats['consumers'] ?? 0;
+                
+                $byChannel[$channel] = [
+                    'queue_name' => $queueName,
+                    'messages_ready' => $messagesReady,
+                    'messages_unacknowledged' => $unacked,
+                    'consumers' => $consumers,
+                ];
+                
+                $totalMessages += $messagesReady;
+                $totalUnacked += $unacked;
+                $totalConsumers += $consumers;
+            }
+
             // Get priority breakdown from database (queued notifications)
-            // This is the most accurate source as it reflects actual pending jobs
             $priorityBreakdown = Notification::where('status', Status::QUEUED)
                 ->selectRaw('priority, count(*) as count')
                 ->groupBy('priority')
                 ->pluck('count', 'priority')
                 ->toArray();
 
-            $totalQueued = array_sum($priorityBreakdown);
-
-            // Get RabbitMQ stats for additional metrics (consumers, etc.)
-            $rabbitmqStats = $this->getRabbitMQStats();
-
             return [
                 'connection' => 'rabbitmq',
-                'queue_name' => 'notifications',
-                'messages_ready' => $totalQueued,
-                'messages_unacknowledged' => $rabbitmqStats['messages_unacknowledged'] ?? 0,
-                'messages_total' => $totalQueued + ($rabbitmqStats['messages_unacknowledged'] ?? 0),
-                'consumers' => $rabbitmqStats['consumers'] ?? 0,
+                'messages_ready' => $totalMessages,
+                'messages_unacknowledged' => $totalUnacked,
+                'messages_total' => $totalMessages + $totalUnacked,
+                'consumers' => $totalConsumers,
                 'priority_breakdown' => [
                     'high' => $priorityBreakdown['high'] ?? 0,
                     'normal' => $priorityBreakdown['normal'] ?? 0,
                     'low' => $priorityBreakdown['low'] ?? 0,
                 ],
+                'by_channel' => $byChannel,
                 'status' => 'healthy',
             ];
         } catch (\Exception $e) {
             return [
-                'connection' => config('queue.default'),
+                'connection' => 'rabbitmq',
                 'status' => 'error',
                 'error' => $e->getMessage(),
             ];
@@ -205,21 +225,21 @@ class MetricsController
     }
 
     /**
-     * Get RabbitMQ stats from Management API
+     * Get RabbitMQ stats for specific queue from Management API
      */
-    private function getRabbitMQStats(): array
+    private function getRabbitMQQueueStats(string $queueName): array
     {
         try {
-            $rabbitmqHost = config('queue.connections.rabbitmq.host', 'rabbitmq');
-            $rabbitmqUser = config('queue.connections.rabbitmq.user', 'notification');
-            $rabbitmqPass = config('queue.connections.rabbitmq.password', 'secret');
-            $rabbitmqVhost = config('queue.connections.rabbitmq.vhost', 'notifications');
+            $host = config('queue.connections.rabbitmq.host', 'rabbitmq');
+            $user = config('queue.connections.rabbitmq.user', 'notification');
+            $pass = config('queue.connections.rabbitmq.password', 'secret');
+            $vhost = config('queue.connections.rabbitmq.vhost', 'notifications');
             
-            $url = "http://{$rabbitmqHost}:15672/api/queues/" . urlencode($rabbitmqVhost) . "/notifications";
+            $url = "http://{$host}:15672/api/queues/" . urlencode($vhost) . "/{$queueName}";
             
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_USERPWD, "{$rabbitmqUser}:{$rabbitmqPass}");
+            curl_setopt($ch, CURLOPT_USERPWD, "{$user}:{$pass}");
             curl_setopt($ch, CURLOPT_TIMEOUT, 2);
             $response = curl_exec($ch);
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -229,6 +249,7 @@ class MetricsController
                 $queueData = json_decode($response, true);
                 
                 return [
+                    'messages_ready' => $queueData['messages_ready'] ?? 0,
                     'messages_unacknowledged' => $queueData['messages_unacknowledged'] ?? 0,
                     'consumers' => $queueData['consumers'] ?? 0,
                 ];
@@ -238,6 +259,7 @@ class MetricsController
         }
 
         return [
+            'messages_ready' => 0,
             'messages_unacknowledged' => 0,
             'consumers' => 0,
         ];
