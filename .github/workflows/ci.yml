@@ -71,20 +71,27 @@ jobs:
           cp .env.example .env
           php artisan key:generate
 
-      - name: Run migrations
+      - name: Create test database
+        run: php -r "
+          \$pdo = new PDO('mysql:host=127.0.0.1;port=3306', 'root', 'password');
+          \$pdo->exec('CREATE DATABASE IF NOT EXISTS notification_dispatcher_test');
+        "
+
+      - name: Run migrations (test database only)
         run: php artisan migrate --force
         env:
           APP_ENV: testing
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
-          DB_DATABASE: notification_dispatcher
+          DB_DATABASE: notification_dispatcher_test
           DB_USERNAME: root
           DB_PASSWORD: password
           REDIS_HOST: 127.0.0.1
           REDIS_PORT: 6379
           CACHE_STORE: redis
           QUEUE_CONNECTION: sync
+          BROADCAST_CONNECTION: log
           SESSION_DRIVER: array
 
       - name: Run tests with coverage
@@ -94,13 +101,14 @@ jobs:
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
-          DB_DATABASE: notification_dispatcher
+          DB_DATABASE: notification_dispatcher_test
           DB_USERNAME: root
           DB_PASSWORD: password
           REDIS_HOST: 127.0.0.1
           REDIS_PORT: 6379
           CACHE_STORE: redis
           QUEUE_CONNECTION: sync
+          BROADCAST_CONNECTION: log
           SESSION_DRIVER: array
 
   phpstan:
