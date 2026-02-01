@@ -9,8 +9,8 @@ abstract class TestCase extends BaseTestCase
 {
     protected function tearDown(): void
     {
-        // Avoid "There is already an active transaction" with MySQL + RefreshDatabase:
-        // disconnect so the next test gets a fresh connection with no leftover transaction
+        // Disconnect to ensure clean state for next test
+        // This prevents "There is already an active transaction" errors with MySQL + RefreshDatabase
         DB::disconnect();
         parent::tearDown();
     }
