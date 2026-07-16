@@ -1,6 +1,6 @@
 # Zeynep Saltık — Savunma Sanayi CV
 
-Bu klasörde iki sayfalık, metin tabanlı ve A4 ölçüsünde hazırlanmış özgeçmiş bulunur.
+Bu klasörde iki sayfalık, metin tabanlı ve A4 ölçüsünde hazırlanmış özgeçmişin düzenlenebilir HTML kaynağı ile başvuruya hazır PDF çıktısı bulunur.
 
 ## Başvuru öncesi zorunlu kontroller
 
@@ -21,6 +21,7 @@ Google Chrome ile:
 google-chrome \
   --headless \
   --disable-gpu \
+  --user-data-dir="/tmp/zeynep-cv-chrome" \
   --no-pdf-header-footer \
   --print-to-pdf="zeynep-saltik-savunma-sanayi-cv.pdf" \
   "file://$(pwd)/zeynep-saltik-savunma-sanayi-cv.html"
