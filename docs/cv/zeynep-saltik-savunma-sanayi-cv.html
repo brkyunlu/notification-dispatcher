@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Zeynep Saltık — savunma sanayi odaklı Art Direktör ve Kıdemli Grafik Tasarımcı özgeçmişi">
+  <title>Zeynep Saltık | Art Direktör — Özgeçmiş</title>
+  <style>
+    :root {
+      --navy-950: #101b2d;
+      --navy-900: #17263d;
+      --navy-800: #203552;
+      --navy-700: #29496d;
+      --slate-800: #303844;
+      --slate-700: #46515f;
+      --slate-600: #64707d;
+      --slate-400: #aab3bd;
+      --slate-200: #dfe4e9;
+      --slate-100: #eef1f4;
+      --paper: #ffffff;
+      --accent: #aebdca;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: #e8ebef;
+      color: var(--slate-800);
+      font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+      font-size: 9.4pt;
+      line-height: 1.42;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      padding: 18mm 0;
+    }
+
+    .document-note {
+      width: 210mm;
+      margin: 0 auto 8mm;
+      padding: 4mm 6mm;
+      border-left: 3px solid var(--navy-700);
+      background: #fff;
+      color: var(--slate-700);
+      box-shadow: 0 2px 12px rgba(16, 27, 45, 0.08);
+      font-size: 9pt;
+    }
+
+    .page {
+      position: relative;
+      display: grid;
+      grid-template-columns: 62mm 1fr;
+      width: 210mm;
+      height: 297mm;
+      margin: 0 auto 12mm;
+      overflow: hidden;
+      background: var(--paper);
+      box-shadow: 0 8px 32px rgba(16, 27, 45, 0.14);
+      break-after: page;
+      page-break-after: always;
+    }
+
+    .page:last-child {
+      margin-bottom: 0;
+      break-after: auto;
+      page-break-after: auto;
+    }
+
+    .sidebar {
+      position: relative;
+      padding: 17mm 9mm 14mm 11mm;
+      overflow: hidden;
+      background: var(--navy-900);
+      color: #f5f7f9;
+    }
+
+    .sidebar::before {
+      position: absolute;
+      top: -36mm;
+      left: -31mm;
+      width: 80mm;
+      height: 80mm;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 50%;
+      content: "";
+    }
+
+    .sidebar::after {
+      position: absolute;
+      right: -32mm;
+      bottom: -38mm;
+      width: 78mm;
+      height: 78mm;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 50%;
+      content: "";
+    }
+
+    .main {
+      position: relative;
+      padding: 16mm 14mm 15mm 15mm;
+      background:
+        linear-gradient(90deg, rgba(32, 53, 82, 0.035) 0, rgba(32, 53, 82, 0.035) 1px, transparent 1px) 0 0 / 18mm 100%,
+        #fff;
+    }
+
+    .eyebrow {
+      margin: 0 0 3mm;
+      color: var(--navy-700);
+      font-size: 7.4pt;
+      font-weight: 700;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 2mm;
+      color: var(--navy-950);
+      font-size: 29pt;
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1;
+    }
+
+    .role {
+      max-width: 108mm;
+      margin-bottom: 5mm;
+      color: var(--slate-600);
+      font-size: 10.7pt;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      line-height: 1.35;
+    }
+
+    .rule {
+      display: flex;
+      align-items: center;
+      gap: 3mm;
+      margin: 0 0 6mm;
+    }
+
+    .rule::before {
+      width: 17mm;
+      height: 2px;
+      background: var(--navy-700);
+      content: "";
+    }
+
+    .rule::after {
+      height: 1px;
+      flex: 1;
+      background: var(--slate-200);
+      content: "";
+    }
+
+    .summary {
+      margin-bottom: 7mm;
+      color: var(--slate-700);
+      font-size: 9.6pt;
+      line-height: 1.58;
+    }
+
+    .section {
+      margin-bottom: 7mm;
+    }
+
+    .section:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 3mm;
+      margin: 0 0 4mm;
+      color: var(--navy-900);
+      font-size: 9.6pt;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .section-title::after {
+      height: 1px;
+      flex: 1;
+      background: var(--slate-200);
+      content: "";
+    }
+
+    .sidebar .section-title {
+      color: #fff;
+      font-size: 8.2pt;
+    }
+
+    .sidebar .section-title::after {
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .monogram {
+      position: relative;
+      display: grid;
+      width: 30mm;
+      height: 30mm;
+      margin-bottom: 10mm;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      place-items: center;
+      color: #fff;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 19pt;
+      letter-spacing: -0.08em;
+    }
+
+    .monogram::before,
+    .monogram::after {
+      position: absolute;
+      width: 7mm;
+      height: 7mm;
+      content: "";
+    }
+
+    .monogram::before {
+      top: -1px;
+      left: -1px;
+      border-top: 2px solid #fff;
+      border-left: 2px solid #fff;
+    }
+
+    .monogram::after {
+      right: -1px;
+      bottom: -1px;
+      border-right: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+    }
+
+    .contact-list,
+    .plain-list,
+    .tag-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .contact-list li {
+      margin-bottom: 3.5mm;
+    }
+
+    .contact-label {
+      display: block;
+      margin-bottom: 0.6mm;
+      color: var(--accent);
+      font-size: 6.7pt;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .contact-value {
+      color: #fff;
+      font-size: 8.7pt;
+      overflow-wrap: anywhere;
+    }
+
+    .skill {
+      margin-bottom: 3mm;
+    }
+
+    .skill-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 2mm;
+      margin-bottom: 1.2mm;
+      font-size: 8.2pt;
+    }
+
+    .skill-level {
+      color: var(--accent);
+      font-size: 6.8pt;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .meter {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.2mm;
+      height: 1.5mm;
+    }
+
+    .meter span {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .meter .filled {
+      background: #fff;
+    }
+
+    .sidebar-note {
+      color: #dce3e9;
+      font-size: 8.1pt;
+      line-height: 1.55;
+    }
+
+    .timeline {
+      position: relative;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .timeline::before {
+      position: absolute;
+      top: 2mm;
+      bottom: 2mm;
+      left: 2.1mm;
+      width: 1px;
+      background: var(--slate-200);
+      content: "";
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 0 0 6mm 10mm;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-item::before {
+      position: absolute;
+      top: 1.2mm;
+      left: 0;
+      width: 4.4mm;
+      height: 4.4mm;
+      border: 1.4mm solid #fff;
+      border-radius: 50%;
+      background: var(--navy-700);
+      box-shadow: 0 0 0 1px var(--navy-700);
+      content: "";
+    }
+
+    .timeline-meta {
+      margin-bottom: 1mm;
+      color: var(--navy-700);
+      font-size: 7.4pt;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .timeline-role {
+      margin-bottom: 0.7mm;
+      color: var(--navy-950);
+      font-size: 11.4pt;
+      font-weight: 750;
+      line-height: 1.2;
+    }
+
+    .timeline-company {
+      margin-bottom: 2mm;
+      color: var(--slate-600);
+      font-size: 8.5pt;
+      font-weight: 600;
+    }
+
+    .compact-list {
+      margin: 0;
+      padding-left: 4mm;
+      color: var(--slate-700);
+      font-size: 8.7pt;
+    }
+
+    .compact-list li {
+      margin-bottom: 1.1mm;
+      padding-left: 1mm;
+    }
+
+    .compact-list li::marker {
+      color: var(--navy-700);
+    }
+
+    .education-item {
+      margin-bottom: 5mm;
+    }
+
+    .education-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .education-degree {
+      margin-bottom: 0.7mm;
+      color: #fff;
+      font-size: 8.7pt;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .education-school,
+    .education-date {
+      margin-bottom: 0.5mm;
+      color: #d6dde4;
+      font-size: 7.7pt;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.8mm;
+    }
+
+    .tag-list li {
+      padding: 1.3mm 2mm;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #eef3f6;
+      font-size: 7.1pt;
+      line-height: 1.2;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4mm;
+    }
+
+    .project-card {
+      min-height: 38mm;
+      padding: 4.3mm;
+      border-top: 2px solid var(--navy-700);
+      background: var(--slate-100);
+    }
+
+    .project-type {
+      margin-bottom: 1.5mm;
+      color: var(--navy-700);
+      font-size: 6.9pt;
+      font-weight: 750;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .project-name {
+      margin-bottom: 2mm;
+      color: var(--navy-950);
+      font-size: 11pt;
+      font-weight: 750;
+    }
+
+    .project-text {
+      margin-bottom: 0;
+      color: var(--slate-700);
+      font-size: 8.3pt;
+      line-height: 1.48;
+    }
+
+    .competency-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm 6mm;
+    }
+
+    .competency {
+      padding-bottom: 2.7mm;
+      border-bottom: 1px solid var(--slate-200);
+    }
+
+    .competency-title {
+      margin-bottom: 0.7mm;
+      color: var(--navy-900);
+      font-size: 8.8pt;
+      font-weight: 750;
+    }
+
+    .competency-text {
+      margin-bottom: 0;
+      color: var(--slate-600);
+      font-size: 7.9pt;
+      line-height: 1.4;
+    }
+
+    .process {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin-top: 1mm;
+    }
+
+    .process-step {
+      position: relative;
+      min-height: 25mm;
+      padding: 4mm 3mm 3mm;
+      border-top: 1px solid var(--navy-700);
+      border-right: 1px solid var(--slate-200);
+    }
+
+    .process-step:last-child {
+      border-right: 0;
+    }
+
+    .process-number {
+      display: block;
+      margin-bottom: 1.5mm;
+      color: var(--navy-700);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 13pt;
+    }
+
+    .process-label {
+      color: var(--slate-800);
+      font-size: 7.4pt;
+      font-weight: 700;
+      line-height: 1.35;
+      text-transform: uppercase;
+    }
+
+    .fit-strip {
+      display: grid;
+      grid-template-columns: 32mm 1fr;
+      margin-top: 2mm;
+      border: 1px solid var(--slate-200);
+    }
+
+    .fit-strip-title {
+      display: grid;
+      padding: 4mm;
+      background: var(--navy-900);
+      color: #fff;
+      font-size: 7.7pt;
+      font-weight: 750;
+      letter-spacing: 0.08em;
+      line-height: 1.4;
+      place-items: center start;
+      text-transform: uppercase;
+    }
+
+    .fit-strip-text {
+      margin: 0;
+      padding: 4mm;
+      color: var(--slate-700);
+      font-size: 8.2pt;
+      line-height: 1.5;
+    }
+
+    .page-number {
+      position: absolute;
+      right: 14mm;
+      bottom: 7mm;
+      color: var(--slate-400);
+      font-size: 7pt;
+      letter-spacing: 0.1em;
+    }
+
+    .page-number strong {
+      color: var(--navy-700);
+      font-weight: 700;
+    }
+
+    .confidentiality {
+      position: absolute;
+      bottom: 8mm;
+      left: 11mm;
+      z-index: 1;
+      color: rgba(255, 255, 255, 0.48);
+      font-size: 6.2pt;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      html,
+      body {
+        background: #fff;
+      }
+
+      body {
+        padding: 0;
+      }
+
+      .document-note {
+        display: none;
+      }
+
+      .page {
+        margin: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <aside class="document-note" aria-label="Düzenleme notu">
+    Başvuru öncesinde köşeli parantezli iletişim, tarih ve firma alanlarını doğrulanmış bilgilerle güncelleyin.
+  </aside>
+
+  <article class="page" aria-label="Özgeçmiş birinci sayfa">
+    <aside class="sidebar" aria-label="İletişim ve uzmanlık bilgileri">
+      <div class="monogram" aria-label="Zeynep Saltık monogramı">ZS</div>
+
+      <section class="section">
+        <h2 class="section-title">İletişim</h2>
+        <ul class="contact-list">
+          <li>
+            <span class="contact-label">Telefon</span>
+            <span class="contact-value">[Telefon numarası]</span>
+          </li>
+          <li>
+            <span class="contact-label">E-posta</span>
+            <span class="contact-value">[Profesyonel e-posta]</span>
+          </li>
+          <li>
+            <span class="contact-label">Konum</span>
+            <span class="contact-value">[Şehir, Türkiye]</span>
+          </li>
+          <li>
+            <span class="contact-label">Portfolyo / LinkedIn</span>
+            <span class="contact-value">[Bağlantı]</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Tasarım Araçları</h2>
+        <div class="skill">
+          <div class="skill-row"><span>Adobe Photoshop</span><span class="skill-level">İleri</span></div>
+          <div class="meter" aria-label="Adobe Photoshop ileri seviye">
+            <span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span>
+          </div>
+        </div>
+        <div class="skill">
+          <div class="skill-row"><span>Adobe Illustrator</span><span class="skill-level">İleri</span></div>
+          <div class="meter" aria-label="Adobe Illustrator ileri seviye">
+            <span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span>
+          </div>
+        </div>
+        <div class="skill">
+          <div class="skill-row"><span>Adobe InDesign</span><span class="skill-level">İleri</span></div>
+          <div class="meter" aria-label="Adobe InDesign ileri seviye">
+            <span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span>
+          </div>
+        </div>
+        <div class="skill">
+          <div class="skill-row"><span>Adobe After Effects</span><span class="skill-level">İleri</span></div>
+          <div class="meter" aria-label="Adobe After Effects ileri seviye">
+            <span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Uzmanlıklar</h2>
+        <ul class="tag-list">
+          <li>Art Direction</li>
+          <li>Kurumsal Kimlik</li>
+          <li>Görsel İletişim</li>
+          <li>Yayın Tasarımı</li>
+          <li>Baskı Öncesi</li>
+          <li>Renk Yönetimi</li>
+          <li>Motion Design</li>
+          <li>Sunum Tasarımı</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Çalışma İlkeleri</h2>
+        <p class="sidebar-note">
+          Marka tutarlılığı, detay disiplini, kontrollü revizyon, doğru dosya yönetimi,
+          teslim standardı ve gizlilik hassasiyeti.
+        </p>
+      </section>
+
+      <div class="confidentiality">Profesyonel Özgeçmiş · 2026</div>
+    </aside>
+
+    <main class="main">
+      <header>
+        <p class="eyebrow">Savunma Sanayi · Görsel İletişim</p>
+        <h1>Zeynep Saltık</h1>
+        <p class="role">Art Direktör · Kıdemli Grafik Tasarımcı · Baskı Üretim Uzmanı</p>
+        <div class="rule" aria-hidden="true"></div>
+        <p class="summary">
+          Kurumsal kimlik, yaratıcı kampanya, yayın tasarımı ve baskı üretimi alanlarında
+          deneyimli Art Direktör. Son iki görevinde yaratıcı süreçlere liderlik etti; ajans
+          bünyesinde ASPİLSAN Enerji ve Pavelsis gibi savunma sanayi kuruluşları için tasarım
+          çalışmaları yürüttü. Güçlü Adobe Creative Cloud yetkinliğini ileri matbaa bilgisi ve
+          üretken yapay zekâ araçlarıyla birleştirerek, teknik hassasiyeti yüksek ve marka
+          standartlarına bağlı iletişim çözümleri üretir.
+        </p>
+      </header>
+
+      <section class="section" aria-labelledby="deneyim-baslik">
+        <h2 class="section-title" id="deneyim-baslik">Profesyonel Deneyim</h2>
+        <ol class="timeline">
+          <li class="timeline-item">
+            <p class="timeline-meta">[Ay/Yıl – Ay/Yıl] · [Şehir]</p>
+            <h3 class="timeline-role">Art Direktör</h3>
+            <p class="timeline-company">[Son çalışılan firma]</p>
+            <ul class="compact-list">
+              <li>Marka stratejisini görsel dile dönüştüren yaratıcı konsept ve kampanya süreçlerine liderlik etti.</li>
+              <li>Tasarım ekibi, müşteri ve üretim paydaşları arasındaki iş akışını; kalite, termin ve bütçe odağında yönetti.</li>
+              <li>Dijital, basılı ve hareketli içeriklerin kurumsal kimlik standartlarına uygunluğunu denetledi.</li>
+            </ul>
+          </li>
+          <li class="timeline-item">
+            <p class="timeline-meta">[Ay/Yıl – Ay/Yıl] · [Şehir]</p>
+            <h3 class="timeline-role">Art Direktör</h3>
+            <p class="timeline-company">[Önceki firma]</p>
+            <ul class="compact-list">
+              <li>Savunma sanayi ve teknoloji markalarına yönelik görsel iletişim projelerinde yaratıcı yön verdi.</li>
+              <li>Katalog, kurumsal sunum, kampanya materyali ve dijital içeriklerde tutarlı tasarım sistemi kurdu.</li>
+              <li>Baskı öncesi kontrol, renk ayrımı, prova ve üretim takibini uçtan uca yönetti.</li>
+            </ul>
+          </li>
+          <li class="timeline-item">
+            <p class="timeline-meta">[Ay/Yıl – Ay/Yıl] · [Şehir]</p>
+            <h3 class="timeline-role">Grafik Tasarımcı</h3>
+            <p class="timeline-company">[Firma adı]</p>
+            <ul class="compact-list">
+              <li>Kurumsal kimlik, sosyal medya, ilan, katalog ve baskılı materyal tasarımları hazırladı.</li>
+              <li>Matbaa uygulamalarında teknik dosya hazırlığı ve üretim kontrollerini gerçekleştirdi.</li>
+            </ul>
+          </li>
+        </ol>
+      </section>
+
+      <section class="section" aria-labelledby="deger-baslik">
+        <h2 class="section-title" id="deger-baslik">Savunma Sanayine Katkı Odağı</h2>
+        <div class="competency-grid">
+          <div class="competency">
+            <h3 class="competency-title">Teknik doğruluk</h3>
+            <p class="competency-text">Karmaşık ürün ve teknoloji anlatısını net görsel hiyerarşiye dönüştürme.</p>
+          </div>
+          <div class="competency">
+            <h3 class="competency-title">Kurumsal disiplin</h3>
+            <p class="competency-text">Marka kılavuzu, onay akışı ve versiyon kontrolüne bağlı üretim.</p>
+          </div>
+          <div class="competency">
+            <h3 class="competency-title">Çok kanallı üretim</h3>
+            <p class="competency-text">Basılı, dijital, sunum ve hareketli içeriklerde bütüncül dil.</p>
+          </div>
+          <div class="competency">
+            <h3 class="competency-title">Gizlilik hassasiyeti</h3>
+            <p class="competency-text">Proje materyallerini kontrollü, dikkatli ve sorumlu biçimde ele alma.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="page-number"><strong>01</strong> / 02</div>
+    </main>
+  </article>
+
+  <article class="page" aria-label="Özgeçmiş ikinci sayfa">
+    <aside class="sidebar" aria-label="Eğitim ve tamamlayıcı yetkinlikler">
+      <div class="monogram" aria-label="Zeynep Saltık monogramı">ZS</div>
+
+      <section class="section">
+        <h2 class="section-title">Eğitim</h2>
+        <div class="education-item">
+          <h3 class="education-degree">Grafik Tasarım</h3>
+          <p class="education-school">Nevşehir Hacı Bektaş Veli Üniversitesi</p>
+          <p class="education-date">[Başlangıç – Mezuniyet]</p>
+        </div>
+        <div class="education-item">
+          <h3 class="education-degree">Grafik Tasarım</h3>
+          <p class="education-school">Çorum Kız Teknik ve Meslek Lisesi</p>
+          <p class="education-date">[Başlangıç – Mezuniyet]</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Yapay Zekâ Araçları</h2>
+        <ul class="tag-list">
+          <li>Prompt Tasarımı</li>
+          <li>Görsel Üretim</li>
+          <li>Fikir Geliştirme</li>
+          <li>Görsel İyileştirme</li>
+          <li>Varyasyon Üretimi</li>
+          <li>Moodboard</li>
+          <li>Storyboard</li>
+          <li>İçerik Uyarlama</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Üretim Bilgisi</h2>
+        <ul class="plain-list sidebar-note">
+          <li>Ofset ve dijital baskı</li>
+          <li>Baskı öncesi dosya kontrolü</li>
+          <li>CMYK / spot renk yönetimi</li>
+          <li>Taşma payı ve kesim çizgileri</li>
+          <li>Kâğıt ve malzeme seçimi</li>
+          <li>Prova ve kalite kontrol</li>
+          <li>Üretici ve tedarikçi koordinasyonu</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">ATS Anahtar Yetkinlikleri</h2>
+        <p class="sidebar-note">
+          Art direction · Grafik tasarım · Kurumsal iletişim · Marka yönetimi ·
+          Kreatif konsept · Teknik dokümantasyon · Savunma sanayi · Havacılık ve teknoloji
+        </p>
+      </section>
+
+      <div class="confidentiality">Profesyonel Özgeçmiş · 2026</div>
+    </aside>
+
+    <main class="main">
+      <header>
+        <p class="eyebrow">Seçilmiş Sektör Deneyimi</p>
+        <h1>Proje Odağı</h1>
+        <p class="role">Savunma sanayi ve teknoloji markaları için kurumsal, tutarlı ve üretilebilir tasarım</p>
+        <div class="rule" aria-hidden="true"></div>
+      </header>
+
+      <section class="section" aria-labelledby="projeler-baslik">
+        <h2 class="section-title" id="projeler-baslik">Savunma Sanayi Projeleri</h2>
+        <div class="project-grid">
+          <article class="project-card">
+            <p class="project-type">Ajans İş Birliği</p>
+            <h3 class="project-name">ASPİLSAN Enerji</h3>
+            <p class="project-text">
+              Kurumun marka standartları ve teknoloji odaklı iletişim dili doğrultusunda
+              grafik tasarım ve yaratıcı üretim desteği.
+            </p>
+          </article>
+          <article class="project-card">
+            <p class="project-type">Ajans İş Birliği</p>
+            <h3 class="project-name">Pavelsis</h3>
+            <p class="project-text">
+              Teknik içeriğin anlaşılır ve güçlü bir görsel hiyerarşiyle sunulmasına yönelik
+              grafik tasarım ve uygulama desteği.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="yetkinlik-baslik">
+        <h2 class="section-title" id="yetkinlik-baslik">Fonksiyonel Yetkinlikler</h2>
+        <div class="competency-grid">
+          <div class="competency">
+            <h3 class="competency-title">Kurumsal kimlik ve marka sistemi</h3>
+            <p class="competency-text">Görsel standartlar, şablon sistemleri, tipografi ve uygulama bütünlüğü.</p>
+          </div>
+          <div class="competency">
+            <h3 class="competency-title">Yayın ve teknik doküman tasarımı</h3>
+            <p class="competency-text">Katalog, broşür, faaliyet içeriği ve yoğun bilgi yapılarında okunabilirlik.</p>
+          </div>
+          <div class="competency">
+            <h3 class="competency-title">Kurumsal sunum tasarımı</h3>
+            <p class="competency-text">Yönetim, ürün, fuar ve proje anlatıları için net bilgi mimarisi.</p>
+          </div>
+          <div class="competency">
+            <h3 class="competency-title">Kampanya ve dijital içerik</h3>
+            <p class="competency-text">Ana görsel, sosyal medya uyarlamaları ve kanal bazlı tasarım sistemi.</p>
+          </div>
+          <div class="competency">
+            <h3 class="competency-title">Motion design</h3>
+            <p class="competency-text">Kurumsal hareket dili, kısa tanıtım içerikleri ve ekran uygulamaları.</p>
+          </div>
+          <div class="competency">
+            <h3 class="competency-title">Baskı ve üretim yönetimi</h3>
+            <p class="competency-text">Teknik hazırlık, malzeme, prova, tedarik ve son kalite kontrolü.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="ai-baslik">
+        <h2 class="section-title" id="ai-baslik">Yapay Zekâ Destekli Tasarım Akışı</h2>
+        <p class="summary">
+          Üretken yapay zekâyı yaratıcı kararın yerine değil; araştırma, konsept varyasyonu,
+          görsel keşif ve kontrollü üretim süreçlerini hızlandıran bir yardımcı olarak kullanır.
+          Kurumsal tutarlılık, telif hassasiyeti ve nihai insan kontrolünü çalışma akışının
+          merkezinde tutar.
+        </p>
+        <div class="process" aria-label="Yapay zekâ destekli tasarım süreci">
+          <div class="process-step">
+            <span class="process-number">01</span>
+            <span class="process-label">Araştırma ve yaratıcı yön</span>
+          </div>
+          <div class="process-step">
+            <span class="process-number">02</span>
+            <span class="process-label">Prompt ve görsel keşif</span>
+          </div>
+          <div class="process-step">
+            <span class="process-number">03</span>
+            <span class="process-label">Tasarım ve uyarlama</span>
+          </div>
+          <div class="process-step">
+            <span class="process-number">04</span>
+            <span class="process-label">İnsan kontrolü ve teslim</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="uyum-baslik">
+        <h2 class="section-title" id="uyum-baslik">Rol ve Kurum Uyumu</h2>
+        <div class="fit-strip">
+          <div class="fit-strip-title">Hedef Çalışma Alanı</div>
+          <p class="fit-strip-text">
+            ASELSAN, HAVELSAN, ROKETSAN, TUSAŞ ve ASPİLSAN Enerji ölçeğindeki teknoloji
+            kurumlarında; Kurumsal İletişim, Marka Yönetimi, Görsel İletişim Tasarımı,
+            Art Direction, Yayın Tasarımı ve Kreatif Hizmetler ekipleri.
+          </p>
+        </div>
+      </section>
+
+      <div class="page-number"><strong>02</strong> / 02</div>
+    </main>
+  </article>
+</body>
+</html>
